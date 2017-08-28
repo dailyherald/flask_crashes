@@ -10,4 +10,4 @@ navbar:
     - text: "Map prep"
       href: 02_Map_prep.html
     - text: "Mapping"
-      href: 03_Mapping.html
+      href: 03_Mapped.html

@@ -230,7 +230,7 @@ In the end, we found the most compelling and useful map was one showing how perv
 
 We mapped towns with five or more total crashes with fatalities over the four years (dark green), towns with at least one and fewer than five crashes with fatalities (light green) and then towns with only crashes with injuries (brown).
 
-```{r, echo=FALSE, fig.width=10, fig.height=10}
+```{r, fig.width=10, fig.height=10}
 
 towns_f <- read.csv("data/towns_f.csv")
 

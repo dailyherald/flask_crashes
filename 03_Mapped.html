@@ -283,7 +283,7 @@ div.tocify {
   <a href="02_Map_prep.html">Map prep</a>
 </li>
 <li>
-  <a href="03_Mapping.html">Mapping</a>
+  <a href="03_Mapped.html">Mapping</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -470,6 +470,31 @@ map</code></pre>
 <h2>Mapping totals</h2>
 <p>In the end, we found the most compelling and useful map was one showing how pervasive the problem is.</p>
 <p>We mapped towns with five or more total crashes with fatalities over the four years (dark green), towns with at least one and fewer than five crashes with fatalities (light green) and then towns with only crashes with injuries (brown).</p>
+<pre class="r"><code>towns_f &lt;- read.csv(&quot;data/towns_f.csv&quot;)
+
+fatals &lt;- towns_f[towns_f$total_fatal &gt; 0,]
+fatals5 &lt;- towns_f[towns_f$total_fatal &gt;= 5,]
+injured &lt;- towns_f[towns_f$total_inj &gt; 0,]
+
+map &lt;- ggplot() + 
+  geom_polygon(data = towns_f, aes(long, lat, group = group), 
+               fill = &quot;#f6e8c3&quot;, color = &quot;white&quot;, size = 0.15) + coord_map() + theme_map()
+
+map &lt;- map + geom_polygon(data = injured, aes(long, lat, group = group), 
+               fill = &quot;#dfc27d&quot;, color = &quot;white&quot;, size = 0.15) + coord_map()
+
+map &lt;- map + geom_polygon(data = fatals, aes(long, lat, group = group), 
+               fill = &quot;#80cdc1&quot;, color = &quot;white&quot;, size = 0.15) + coord_map()
+
+map &lt;- map + geom_polygon(data = fatals5, aes(long, lat, group = group), 
+               fill = &quot;#018571&quot;, color = &quot;white&quot;, size = 0.15) + coord_map()
+
+map &lt;- map + theme(legend.position=&quot;None&quot;)
+
+map &lt;- map + geom_polygon(data = co6, aes(x=long, y = lat, group = group),
+                          fill = NA, color = &quot;blue&quot;, size = 0.25)
+
+map</code></pre>
 <p><img src="03_Mapped_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
 <p>Finally, we exported out the data to use as the basis of a web app, and to import into QGis to create the geojson that would power an interactive map.</p>
 </div>
