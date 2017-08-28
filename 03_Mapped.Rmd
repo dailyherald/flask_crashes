@@ -1,0 +1,263 @@
+---
+title: "03_Mapped"
+output:
+  html_document: 
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Mapping crash data
+
+We're exploring the pedestrian/cycling crash data using maps. First we need to load in a bunch of libraries and the data. 
+
+```{r, echo=FALSE}
+
+# check libraries
+library(readr)
+library(rgdal)
+library(dplyr)
+library(RColorBrewer) # for my color ramp
+library(viridis)
+library(scales)
+library(ggplot2)
+library(ggmap)
+library(ggthemes)
+
+#---------------------
+# This function set styles for the chart
+# Be sure to run it before you plot
+
+theme_map <- function(...) {
+  theme_set(theme_get() + theme(text = element_text(family = 'Verdana', size= 12, lineheight=0.9))) + 
+    theme(
+      # edit background colors and elements
+      plot.background = element_blank(),
+      legend.background = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.background = element_blank(),
+      axis.ticks = element_blank(),
+      axis.text = element_blank(),
+      axis.title = element_blank(),
+      # edit font sizes
+      plot.title = element_text(size = 27,face="bold"),
+      plot.subtitle = element_text(size = 18),
+      legend.title=element_text(size = 13,face="bold"),
+      legend.text=element_text(size=14.7),
+      legend.text.align = 0, # 0 = left, 1 = right
+      plot.caption=element_text(size=13.5, hjust=0),
+      strip.text = element_text(face="bold", size=13.5, hjust=0),
+       ...
+    )
+}
+
+#-----------------
+# read in the data
+
+ill_f <- read.csv("data/ill_f.csv", stringsAsFactors = FALSE)
+
+co6 <- read.csv("data/counties6.csv", stringsAsFactors = FALSE)
+
+
+```
+
+##How we looked at the data geographically
+
+We examined the data geographically in a variety of ways. We mapped total crashes by year and crashes with injuries by year.
+
+We calculated the rate of crashes and the rate of injuries for each municipality by 1,000 population, for each year. 
+
+```{r  eval = FALSE}
+
+ill_f$total_injrate_2014 <- (ill_f$total_inj_2014/ill_f$pop_2014)*1000
+ill_f$total_injrate_2015 <- (ill_f$total_inj_2015/ill_f$pop_2015)*1000
+ill_f$totalinjchg_1415 <- ill_f$total_injrate_2015 - ill_f$total_injrate_2014
+
+```
+
+Then we started generating maps. 
+
+##2015 crashes
+For instance, here's the rate per 1000 population for all crashes in 2015, by town. The data is mapped by quintiles, or in five chunks with about the same number of towns in each chunk.
+
+Here's how that would divide up.
+
+```{r}
+quantile(ill_f$total_rate_2015, probs = seq(0, 1, .2), na.rm=TRUE)
+```
+
+This shows the break points in our data for quintiles. Each chunk is about 20% of the data (100/5 = 20). The lowest 20%, from 0 to 20%, is 0.04 to 0.18. The highest 20%, from 80 to 100%, is from 0.49 to 4.81. 
+
+Here's what that looks like on the map.
+
+```{r, fig.width=10, fig.height=10}
+
+
+#----------------------------------
+#----------------------------------
+
+# define quantiles for data
+no_classes <- 5
+labels <- c()
+
+quantiles <- quantile(ill_f$total_rate_2015, # data you wish to work with
+                      probs = seq(0, 1, length.out = no_classes + 1),
+                      na.rm=TRUE)
+
+# custom labels
+labels <- c()
+for(idx in 1:length(quantiles)){
+  labels <- c(labels, paste0(round(quantiles[idx], 2)))
+}
+labels <- labels[1:length(labels)-1]
+
+# add quantile info to dataset
+ill_f$total_rate_2015_quantiles <- cut(ill_f$total_rate_2015, 
+                                   breaks = quantiles, 
+                                   labels = labels, 
+                                   include.lowest = T)
+
+# now map
+
+map <- ggplot(ill_f, 
+              aes(long, lat, group = group, fill = total_rate_2015_quantiles)
+) +
+  geom_polygon( color = "white", size = 0.15) + coord_map() + theme_map()
+
+map <- map + labs(
+  fill = "2015 crash rate"
+  )
+
+map <- map + 
+  theme(legend.position = "top", legend.direction = "horizontal") +
+  scale_fill_manual(
+  values = c("#a6611a", "#dfc27d", "#f6e8c3", "#80cdc1", "#018571"),
+  guide = guide_legend(
+    direction = "horizontal",
+    keyheight = unit(2, units = "mm"),
+    keywidth = unit(75 / length(labels), units = "mm"),
+    title.position = 'top',
+    title.hjust = 0.5,
+    nrow = 1,
+    byrow = T,
+    # Can reverse the legend if that's clearer
+    reverse = F,
+    label.position = "bottom")
+)
+
+map <- map + geom_polygon(data = co6, aes(x=long, y = lat, group = group),
+                          fill = NA, color = "blue", size = 0.25)
+
+map
+
+```
+
+##Change over time
+
+We looked how the data changed over time. For instance, here's the change in the total crash rate per 1000 from 2014 to 2015.
+
+
+```{r, fig.width=10, fig.height=10}
+
+ill_f$chg1415 <- ill_f$total_rate_2015 - ill_f$total_rate_2014
+quantile(ill_f$chg1415, probs = seq(0, 1, .2), na.rm=TRUE)
+
+# define quantiles for data
+no_classes <- 5
+labels <- c()
+
+quantiles <- quantile(ill_f$chg1415, # data you wish to work with
+                      probs = seq(0, 1, length.out = no_classes + 1),
+                      na.rm=TRUE)
+
+# custom labels
+labels <- c()
+for(idx in 1:length(quantiles)){
+  labels <- c(labels, paste0(round(quantiles[idx], 2)))
+}
+labels <- labels[1:length(labels)-1]
+
+# add quantile info to dataset
+ill_f$chg1415_quantiles <- cut(ill_f$chg1415, 
+                                       breaks = quantiles, 
+                                       labels = labels, 
+                                       include.lowest = T)
+
+# now map
+
+map <- ggplot(ill_f, 
+              aes(long, lat, group = group, fill = chg1415_quantiles)
+) +
+  geom_polygon( color = "white", size = 0.15) + coord_map() + theme_map()
+
+map <- map + labs(
+  fill = "Change in total rate, 2014-2015"
+)
+
+map <- map + 
+  theme(legend.position = "top", legend.direction = "horizontal") +
+  scale_fill_manual(
+    values = c("#a6611a", "#dfc27d", "#f6e8c3", "#80cdc1", "#018571"),
+    guide = guide_legend(
+      direction = "horizontal",
+      keyheight = unit(2, units = "mm"),
+      keywidth = unit(75 / length(labels), units = "mm"),
+      title.position = 'top',
+      title.hjust = 0.5,
+      #label.hjust = 1,
+      nrow = 1,
+      byrow = T,
+      # Can reverse the legend if that's clearer
+      reverse = F,
+      label.position = "bottom")
+  )
+
+map <- map + geom_polygon(data = co6, aes(x=long, y = lat, group = group),
+                          fill = NA, color = "blue", size = 0.25)
+
+map
+```
+
+##Mapping totals
+
+In the end, we found the most compelling and useful map was one showing how pervasive the problem is.
+
+We mapped towns with five or more total crashes with fatalities over the four years (dark green), towns with at least one and fewer than five crashes with fatalities (light green) and then towns with only crashes with injuries (brown).
+
+```{r, echo=FALSE, fig.width=10, fig.height=10}
+
+towns_f <- read.csv("data/towns_f.csv")
+
+fatals <- towns_f[towns_f$total_fatal > 0,]
+fatals5 <- towns_f[towns_f$total_fatal >= 5,]
+injured <- towns_f[towns_f$total_inj > 0,]
+
+map <- ggplot() + 
+  geom_polygon(data = towns_f, aes(long, lat, group = group), 
+               fill = "#f6e8c3", color = "white", size = 0.15) + coord_map() + theme_map()
+
+map <- map + geom_polygon(data = injured, aes(long, lat, group = group), 
+               fill = "#dfc27d", color = "white", size = 0.15) + coord_map()
+
+map <- map + geom_polygon(data = fatals, aes(long, lat, group = group), 
+               fill = "#80cdc1", color = "white", size = 0.15) + coord_map()
+
+map <- map + geom_polygon(data = fatals5, aes(long, lat, group = group), 
+               fill = "#018571", color = "white", size = 0.15) + coord_map()
+
+map <- map + theme(legend.position="None")
+
+map <- map + geom_polygon(data = co6, aes(x=long, y = lat, group = group),
+                          fill = NA, color = "blue", size = 0.25)
+
+map
+
+```
+
+Finally, we exported out the data to use as the basis of a web app, and to import into QGis to create the geojson that would power an interactive map. 

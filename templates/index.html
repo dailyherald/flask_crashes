@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width" />
+
+  <title>
+    Pedestrian and cyclist crashes
+  </title>
+
+    <!-- LEAFLET for mapping -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}" />
+
+    <!-- BOOTSTRAP Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-1.11.3.min.js') }}"></script>
+
+ 
+    <!--Begin Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.js"></script>
+    <!--end Datatables-->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='newsArt.css') }}" />
+
+<script>
+var $ = jQuery;
+</script>
+
+<script>
+
+$(document).ready(function() {
+    $('#gfx').DataTable( {
+      responsive: true
+      } );
+} );
+
+</script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top" style="margin : 0 !important;">
+    <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <img alt="Brand" src="{{ url_for('static', filename='img/dh.png') }}"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="http://www.dailyherald.com" target="_blank">Daily Herald</a></li>
+                <li><a href="http://reportcards.dailyherald.com/gfx/" target="_blank">Daily Herald News Art</a></li>
+            </ul>
+        </div>
+    </div><!-- end container  <h1 style="color:white;font-size:60px;"><strong>Main project headlining</strong></h1>-->
+</nav>
+
+
+
+<div style="background-color:black;padding:20px;">
+    <div class="row">
+        <div class="col-md-12">
+            <br>
+            <p style="color:white; text-align:center;"><span style="color:red"><strong>LOGO TEXT HERE</strong></span> | Continue logo text here</p>
+            <img src="{{ url_for('static', filename='img/crossings.jpg') }}" class="img-responsive center-block"><br>
+           
+            <h1 class="headstyle">Main project headlining</h1>
+            <br>
+            <h3 style="color:white; font-size:26px; text-align:center;">Pedestrian and cyclist crashes in the suburbs, 2012-2015</h3><br>
+            <div class = "row">
+                <div class="col-sm-6 col-xs-12 col-centered">
+                    <table style="color:white;width:100%;border-collapse: separate;
+    border-spacing: 10px 0px;" >
+                        <thead>
+                            <th class="thCENT">TOTAL<br>CRASHES</th>
+                            <th class="thCENT">CRASHES<br>WITH INJURIES</th>
+                            <th class="thCENT">CRASHES</br>WITH FATALITIES</th>
+                        </thead>
+                        <tbody>
+                            <tr><td class="tdCENT"><strong>9,868</strong></td>
+                                <td class="tdCENT"><strong>9,290</td>
+                                <td class="tdCENT"><strong>250</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <p class="source" style="color:white;text-align:center;">Note: Suburban totals include unicorporated areas. Data from Chicago is included below.</p>
+                </div>
+            </div>
+                    <br>
+
+
+            <div class = "row">
+                <div class="col-sm-6 col-xs-12"><span class="align-middle">
+                        
+                        <p style="color:white;font-size:16px;">
+                        First of two side-by-side columns below the main headline. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.</p>
+                        <hr style="color:white;">
+                        <p>
+                            <style type="text/css">
+                                div.bar {
+                                    display: inline-block;
+                                    width: 12px;
+                                    height: 12px;
+                                    border: 1px solid;
+                                    border-color:white;
+                                    opacity: 0.8;
+                                    }
+                                .cont2 {
+                                    background-color: white;
+                                    }
+                                .cont3 {
+                                    background-color: #dfc27d;
+                                    }
+                                .cont4 {
+                                    background-color: #80cdc1;
+                                    }
+                                .cont5 {
+                                    background-color: #018571;
+                                    }
+                            </style>
+                                <div class="bar cont5"></div> <span style="color:white;">Towns with five or more crashes with fatalities; crashes with injuries.</span></br>
+                                <div class="bar cont4"></div> <span style="color:white;">Towns with fewer than five crashes with fatalities; crashes with injuries.</span><br>
+                                <div class="bar cont3"></div> <span style="color:white;">Towns with crashes with injuries only.</span><br>
+                                <div class="bar cont2"></div> <span style="color:white;">No data available.</span>
+                            </p>
+                        <p class="small" style="color:white;">Note: South Barrington reported one crash with a fatality, but no crashes with injuries.</p> 
+                </span>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <div id="pageMap" style="width:100%; height:450px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container" >
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Subheading for list</h1>
+            <p class="topmargin"><strong>The list below is interactive: </strong><span style="color:red">Sort</span> the list by clicking on the column headings, or <span style="color:red">look for your municipality</span> using the search box. You can also <span style="color:red">choose to view</span> more at a time with the "Show entries" box.</strong></p>
+            <p class="topmargin"><strong>Click the municipality name</strong> to view more complete statistics for each year available.</p>
+            <p>
+                <table id="gfx" class="table table-hover table-striped table-condensed display" width="100%" ><thead>
+                        <th class="thLEFT text-nowrap">Town</th>
+                        <th>Total crashes</th>
+                        <th>Crashes<br>with injuries</th>
+                        <th>Crashes<br>with fatalities</th>
+                    </thead>
+                    <tbody>
+                        {% for obj in object_list %}
+                        <tr><td class="tdLEFT text-nowrap"><a href="{{obj.id}}/index.html">{{ obj.Town }}</a></td>
+                            <!-- be sure to specify index.html or it will not work with freeze -->
+                            <td>{{ obj.total_crashes }}</td>
+                            <td>{{ obj.total_inj }}</td>
+                            <td>{{ obj.total_fatal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </p>
+                
+        </div>
+    </div>
+</div>
+
+<div id="creditBox">
+  <div class="row">
+    <div class="col-md-10 center-block center-blockfloat">
+      <p><small>Daily Herald web app by Tim Broderick <a href="mailto:tbroderick@dailyherald.com">tbroderick@dailyherald.com</a>. Source: XXXXX<br>
+        All files and data are available at our github site. A diary of how we looked at the data can be found here. App based on <a href="https://first-news-app.readthedocs.io/en/latest/" target="_blank">First News App</a> by <a href="http://palewi.re/who-is-ben-welsh/" target="_blank">Ben Welsh</a>. 
+      </small></p>
+    </div>
+  </div>
+</div>
+<div id="underfoot"></div>
+
+<script type="text/javascript">
+
+    var map = L.map('pageMap').setView([41.8, -88], 9);
+    var osmLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>.'
+    });
+    map.addLayer(osmLayer);
+/*
+    var data = {
+          "type": "FeatureCollection",
+          "features": [
+            {% for obj in object_list %}
+            {
+              "type": "Feature",
+              "properties": {
+                "full_name": "{{ obj.full_name }}",
+                "id": "{{ obj.id }}"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [{{ obj.x }}, {{ obj.y }}]
+              }
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ]
+        };
+// be sure to specify index.html or it will not work with freeze
+    var dataLayer = L.geoJson(data, { onEachFeature: function(feature, layer) { layer.bindPopup('<a href="' + feature.properties.id + '/index.html">' + feature.properties.full_name + '</a>'); } });
+    map.addLayer(dataLayer);
+
+*/
+
+</script>
+
+</body>
+</html>

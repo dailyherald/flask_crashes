@@ -1,0 +1,240 @@
+---
+title: "02_Map_prep"
+output:
+  html_document: 
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: cosmo
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Prepping the data for mapping
+
+The data needs to be matched up with geographies in the form of shapefiles. Shapefiles are the electronic files that contain not just the shape of a place, but also any data that's associated with that place.
+
+First we load in the libraries we need and our data.
+
+```{r}
+
+library(readr)
+library(ggplot2)
+library(rgdal)
+library(dplyr)
+library(ggmap)
+
+df <- read_csv("data/all_crashData_0809.csv")
+
+```
+
+Now let's load in the shapefiles.
+
+```{r}
+
+ill <- readOGR(dsn = "sixCoplaces/smaller2.shp")
+
+head(ill@data, n = 10)
+summary(ill@data)
+
+```
+
+smaller2.shp are the places - meaning towns and other municipalities - in the six-county area. Shapefiles can be very large and detailed, the shapes in he shapes have been simplified in a mapping program called Qgis. By simplified, we mean the shapes have been reduced in complexity - they have fewer points, which keeps the file size down.
+
+The shapes aren't going to be accurate to the square foot, but they're still representative of the municipality.
+
+The data in the file can be accessed using the "@" sign instead of a "$" for dataframes. And, it's called "data".
+
+We can see the shapes using the "plot" command.
+
+```{r}
+
+plot(ill)
+
+```
+
+##Checking the data
+
+We can test how well the data will match up. We'll see if the town names in ill@data match up with the town names in our dataframe.
+
+```{r}
+
+ill$NAME10 %in% df$town
+
+```
+
+That results in a lot of "false" results, where there was no match for a place.
+
+We ended up exporting the data and looking at it in excel. We found that all the towns in our data set match up with the geo data. The false results were towns for which we had no data.
+
+##Reworking the data
+
+The next problem is reworking our data so we can match it up a town. If you look at the dataframe, you'll see that each town has up to four rows (one for each year). We need each town to have only one row, to match up with the one geography.
+
+First we grab the data by year
+
+```{r}
+
+df2012 <- df[df$year == 2012,]
+df2013 <- df[df$year == 2013,]
+df2014 <- df[df$year == 2014,]
+df2015 <- df[df$year == 2015,]
+
+```
+
+Then we need to rename the columns so their names aren't duplicated. While we're at it, we'll delete or null some columns we don't need anymore.
+
+```{r}
+
+df2012 <- rename(df2012, 
+       cycle_total_2012 = cycle_total,
+       cycle_fatal_2012 = cycle_fatal,
+       cycle_inj_2012 = cycle_inj,
+       ped_total_2012 = ped_total,
+       ped_fatal_2012 = ped_fatal,
+       ped_inj_2012 = ped_inj,
+       total_crashes_2012 = total_crashes,
+       total_inj_2012 = total_inj,
+       total_fatal_2012 = total_fatal,
+       pop_2012 = pop,
+       cycle_rate_2012 = cycle_rate,
+       ped_rate_2012 = ped_rate,
+       total_rate_2012 = total_rate
+       )
+
+df2012$town2 = NULL
+df2012$year = NULL
+
+df2013 <- rename(df2013, 
+                 cycle_total_2013 = cycle_total,
+                 cycle_fatal_2013 = cycle_fatal,
+                 cycle_inj_2013 = cycle_inj,
+                 ped_total_2013 = ped_total,
+                 ped_fatal_2013 = ped_fatal,
+                 ped_inj_2013 = ped_inj,
+                 total_crashes_2013 = total_crashes,
+                 total_inj_2013 = total_inj,
+                 total_fatal_2013 = total_fatal,
+                 pop_2013 = pop,
+                 cycle_rate_2013 = cycle_rate,
+                 ped_rate_2013 = ped_rate,
+                 total_rate_2013 = total_rate
+)
+df2013$town2 = NULL
+df2013$year = NULL
+
+df2014 <- rename(df2014, 
+                 cycle_total_2014 = cycle_total,
+                 cycle_fatal_2014 = cycle_fatal,
+                 cycle_inj_2014 = cycle_inj,
+                 ped_total_2014 = ped_total,
+                 ped_fatal_2014 = ped_fatal,
+                 ped_inj_2014 = ped_inj,
+                 total_crashes_2014 = total_crashes,
+                 total_inj_2014 = total_inj,
+                 total_fatal_2014 = total_fatal,
+                 pop_2014 = pop,
+                 cycle_rate_2014 = cycle_rate,
+                 ped_rate_2014 = ped_rate,
+                 total_rate_2014 = total_rate
+)
+df2014$town2 = NULL
+df2014$year = NULL
+
+df2015 <- rename(df2015, 
+                 cycle_total_2015 = cycle_total,
+                 cycle_fatal_2015 = cycle_fatal,
+                 cycle_inj_2015 = cycle_inj,
+                 ped_total_2015 = ped_total,
+                 ped_fatal_2015 = ped_fatal,
+                 ped_inj_2015 = ped_inj,
+                 total_crashes_2015 = total_crashes,
+                 total_inj_2015 = total_inj,
+                 total_fatal_2015 = total_fatal,
+                 pop_2015 = pop,
+                 cycle_rate_2015 = cycle_rate,
+                 ped_rate_2015 = ped_rate,
+                 total_rate_2015 = total_rate
+)
+df2015$town2 = NULL
+df2015$year = NULL
+
+```
+
+Then we can take those new dataframes and join them to the geo data
+
+We'll also delete out some columns from the geo data that we don't need anymore.
+
+```{r}
+
+ill@data <- left_join(ill@data, df2012, by = c('NAME10' = 'town'))
+ill@data <- left_join(ill@data, df2013, by = c('NAME10' = 'town'))
+ill@data <- left_join(ill@data, df2014, by = c('NAME10' = 'town'))
+ill@data <- left_join(ill@data, df2015, by = c('NAME10' = 'town'))
+
+ill@data$POPESTIMAT <- NULL
+ill@data$POPESTIM_1 <- NULL
+ill@data$POPESTIM_2 <- NULL
+ill@data$change2010 <- NULL
+ill@data$change2014 <- NULL
+ill@data$change20_1 <- NULL
+names(ill)
+
+```
+
+Now let's save the new dataframe and read it back in.
+
+```{r}
+
+write_csv(ill@data,"data/mapdata.csv")
+cycped <- read.csv("data/mapdata.csv", stringsAsFactors = FALSE)
+head(cycped)
+
+```
+
+Just a few more steps. 
+
+##Creating the map dataframe
+
+Now we take the shapefile and process it so we can do mapping in R.
+
+```{r}
+
+ill_f <- fortify(ill, region="GEOID10")
+
+```
+
+Once we do that, we need to rejoin the data we saved to the new geo file. One minor thing we have to do is set up the geoid number in the new geo file as a number, so that we can join it with the geoid in our data file (which is already a recognized as a number)
+
+```{r}
+
+ill_f$id <- as.numeric(as.character(ill_f$id))
+
+ill_f <- left_join(ill_f, cycped, by = c('id' = 'GEOID10'))
+
+```
+
+Now that it's joined, we write the file out as a csv so we can use it for mapping.
+
+```{r}
+
+write_csv(ill_f,"data/ill_f.csv")
+
+```
+
+
+Finally, let's import and process a shapefile of the six counties, to make it easier to recognize where things are.
+
+```{r}
+
+counties <- readOGR(dsn = "sixcounties/SixCounties.shp")
+names(counties@data)
+co6 <- fortify(counties, region="geoid10")
+write_csv(co6,"data/counties6.csv")
+
+```
+
+Now we can do some exploratory mapping to see how the data plays out across the region. 

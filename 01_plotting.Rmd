@@ -1,0 +1,212 @@
+---
+title: "01_plotting"
+output:
+  html_document: 
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Examining the crash data
+
+##Loading the data in R
+
+One of the concerns we had with the data is that we would basically be looking at towns with high populations - the higher the population, the more pedestrian and cyclist accidents there would be.
+
+We used the population data for each year to compute the rate of cyclist crashes, pedestrican crashes and total crashes per 1,000 population. 
+
+To do this, according to Numbers in the Newsroom (available [here](https://store.ire.org/products/numbers-in-the-newsroom-using-math-and-statistics-in-news-second-edition-e-version) from the IRE), you take the number of crashes and divide by the population. Then multiply that number by 1000.
+
+This way we can compare more than just the raw numbers.
+
+Start with loading the libraries we need along with the data:
+
+```{r}
+
+# load the libraries 
+library(readr)
+library(ggplot2)
+library(ggthemes)
+#-------------------
+
+df <- read_csv("data/all_crashData_0809.csv")
+
+
+```
+
+Then before we get started, let's select everything except Chicago as those totals are far higher than our surburban numbers.
+
+```{r}
+
+df <- df[df$town != "Chicago",]
+
+```
+
+So we understand, we're looking at suburban crashes.
+
+##Charting density
+
+We'll look at the summary, but also store the results of that summary call in a dataframe.
+
+```{r}
+
+dfsum <- data.frame(unclass(summary(df)), check.names = FALSE, stringsAsFactors = FALSE)
+dfsum
+
+```
+
+Here's a density chart on total pedestrian crashes, by year
+
+```{r}
+
+qplot(ped_total, data=df, 
+      geom="density",
+      fill = factor(year),
+      color = factor(year)
+      #alpha=I(.5) 
+) +
+  facet_grid(. ~ factor(year))
+
+```
+
+We also looked at charts for cyclist crashes and total crashes, as well as the rates for these. For the most part, the shape of the data was about the same - many places had a few amouts of each and few places had many amounts.
+
+##Comparing to population
+
+Let's take a look at the data compared to total population. Here's total cycle crashes vs. population, by year.
+
+```{r}
+
+qplot(pop,cycle_total,
+      data=df,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+As expected, places with higher populations generally had higher numbers of cycle crashes.
+
+But what happens when we use the rate per 1000?
+
+```{r}
+
+qplot(pop,cycle_rate,
+      data=df,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+
+That's a very different result. Let's exclude rates above 2 since those are low popluation places where a single accident would throw things off.
+
+```{r}
+
+dfa <- df[df$total_rate < 2,]
+
+qplot(pop,cycle_rate,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+Here's pedestrian crashes vs. pop.
+
+```{r}
+
+qplot(pop,ped_total,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+
+Here's the rate 1000 for pedestrian crashes vs pop.
+
+```{r}
+
+qplot(pop,ped_rate,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+Here's total crashes vs. pop.
+
+```{r}
+
+qplot(pop,total_crashes,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+
+Here's the rate per 1000 of total crashes vs. pop.
+
+```{r}
+
+qplot(pop,total_rate,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+Places with higher populations do tend to have more crashes, but even within that expected result we can see places with higher than expected crashes. And when you look at crashes by rate per 1000, there's generally a negative correlation with population.
+
+
+##Injuries per 1000
+
+Here's number of injuries compared to crashes per 1000
+
+
+```{r}
+
+qplot(cycle_rate,cycle_inj,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+```{r}
+
+qplot(ped_rate,ped_inj,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+```{r}
+
+qplot(total_rate,total_inj,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+
+```
+
+Generally it looks like the higher the crash rate, the more injuries - which could be assumed. But again, there looks to be many places with higher than expected injuries vs. their rate.
+
+So it looks like it's not only about population. 

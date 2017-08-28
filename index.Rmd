@@ -1,0 +1,64 @@
+---
+title: "Introduction"
+output:
+  html_document: 
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#How we examined data on pedestrian, cyclist accidents
+
+##Getting the data
+
+Transportation writer Marni Pyke obtained two pdf files that reported stats on 1) pedestrian and 2) cyclist crashes with vehicles by town from 2012 to 2015. 
+
+The stats include total crashes, crashes with injuries and crashes with fatalities. They also go into detail regarding the severity of injury. 
+
+We used [Tabula](http://tabula.technology/) to extract the tables into csv files, which we opened in Excel.
+
+##Prepping the data
+
+In excel, we merged the two datasets together. That involved a few steps. 
+
+* We used a pivot table to combine figures for towns with boundaries that crossed counties. 
+
+* Not every town in the six-county area around Chicago was included, and not every town included had stats for each year. And town names were non-standard (No Aurora for North Aurora). So we sorted the two sets each by year then by town name and then painstakingly matched the two sets up row-by-row, using a logical "if" statement to help us see when names matched.
+
+* In retrospect, we could have brought the data into R and merged it there instead of doing it line-by-line. Overall may have saved us about an hout? But it's not that large a dataset, and it was worth taking the time to look at it line-by-line. 
+
+* With the two data sets combined by town and years, we were able to get a complete list of towns. We downloaded 5-year population estimates from the American Community Survey for each of the four years. Then we matched those town names up with our dataset's town names in excel to create a master list of towns. 
+
+* ACS place population estimates include special census areas (CDPs) that are annoying for this kind of work because some of them are named the same as incorporated towns - in this case Willowbrook and Wilmington. We removed those two CDPs from the population sets, the list of all towns and (eventually) the shapefile we used for mapping.
+
+* We exported the town list (alltowns.csv) and the data by year (y2012.csv, y2013.csv etc)
+
+Then we used R to join the town list (alltowns.csv) with each year of our data. Here's 2015:
+
+```{r eval = FALSE}
+
+library(readr)
+
+df1 <- read_csv("data/y2015.csv") # change year as needed
+df2 <- read_csv("data/alltowns.csv")
+df3 <- merge(x = df1, y = df2, by = "town", all.x = TRUE)
+write_csv(df3,"data/towns2015.csv") # change year as needed
+
+```
+
+Finally we were able to join population estimates with for each year with our dataset.
+
+```{r eval = FALSE}
+df1 <- read_csv("data/towns2015.csv")
+df2 <- read_csv("data/pop2015.csv")
+df3 <- merge(x = df1, y = df2, by = "town", all.x = TRUE)
+write_csv(df3,"data/join2015.csv")
+
+```
+
+We brought the four files into all_crashData_0809.xlsx, where we ran pivot tables to get totals for each town and each year. We also added a tab for unicorporated numbers, which we did not include with the town or year data.
