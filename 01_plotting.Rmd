@@ -1,5 +1,5 @@
 ---
-title: "01_plotting"
+title: "Examining the crash data"
 output:
   html_document: 
     toc: true
@@ -12,17 +12,17 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Examining the crash data
+##Normalizing the data
 
-##Loading the data in R
-
-One of the concerns we had with the data is that we would basically be looking at towns with high populations - the higher the population, the more pedestrian and cyclist accidents there would be.
+One of the concerns we had is that we would basically be looking at towns with high populations - the higher the population, the more pedestrian and cyclist accidents there would be.
 
 We used the population data for each year to compute the rate of cyclist crashes, pedestrican crashes and total crashes per 1,000 population. 
 
 To do this, according to Numbers in the Newsroom (available [here](https://store.ire.org/products/numbers-in-the-newsroom-using-math-and-statistics-in-news-second-edition-e-version) from the IRE), you take the number of crashes and divide by the population. Then multiply that number by 1000.
 
-This way we can compare more than just the raw numbers.
+This way we can compare more than just the raw numbers. And, we can get a bit more of an apples-to-apples comparison between large and small towns.
+
+##Working in R
 
 Start with loading the libraries we need along with the data:
 
@@ -39,7 +39,7 @@ df <- read_csv("data/all_crashData_0809.csv")
 
 ```
 
-Then before we get started, let's select everything except Chicago as those totals are far higher than our surburban numbers.
+Select everything except Chicago as those totals are far higher than our surburban numbers, which will skew our visualizations.
 
 ```{r}
 
@@ -47,11 +47,10 @@ df <- df[df$town != "Chicago",]
 
 ```
 
-So we understand, we're looking at suburban crashes.
 
 ##Charting density
 
-We'll look at the summary, but also store the results of that summary call in a dataframe.
+Summary gives us a look at each column, including the mean and median. In case we want to reference that later, we store the results of that summary call in a dataframe.
 
 ```{r}
 
@@ -74,11 +73,11 @@ qplot(ped_total, data=df,
 
 ```
 
-We also looked at charts for cyclist crashes and total crashes, as well as the rates for these. For the most part, the shape of the data was about the same - many places had a few amouts of each and few places had many amounts.
+We also looked at charts for cyclist crashes and total crashes, as well as the rates for these. For the most part, the shape of the data was about the same - many places had a few amounts of each and a few places had many amounts.
 
 ##Comparing to population
 
-Let's take a look at the data compared to total population. Here's total cycle crashes vs. population, by year.
+We used scatter plots to compare to total population. Here's total cycle crashes vs. population, by year.
 
 ```{r}
 
@@ -92,7 +91,7 @@ qplot(pop,cycle_total,
 
 As expected, places with higher populations generally had higher numbers of cycle crashes.
 
-But what happens when we use the rate per 1000?
+Comparing the crash rate per 1000 yielded different results. 
 
 ```{r}
 
@@ -105,7 +104,7 @@ qplot(pop,cycle_rate,
 ```
 
 
-That's a very different result. Let's exclude rates above 2 since those are low popluation places where a single accident would throw things off.
+Here we exclude rates above 2 since those are low popluation places where a single accident would yield a high rate.
 
 ```{r}
 
@@ -131,7 +130,6 @@ qplot(pop,ped_total,
 
 ```
 
-
 Here's the rate 1000 for pedestrian crashes vs pop.
 
 ```{r}
@@ -155,7 +153,6 @@ qplot(pop,total_crashes,
   facet_grid(. ~ factor(year))
 
 ```
-
 
 Here's the rate per 1000 of total crashes vs. pop.
 
@@ -207,6 +204,4 @@ qplot(total_rate,total_inj,
 
 ```
 
-Generally it looks like the higher the crash rate, the more injuries - which could be assumed. But again, there looks to be many places with higher than expected injuries vs. their rate.
-
-So it looks like it's not only about population. 
+Generally it looks like the higher the crash rate, the more injuries - which might be expected. But again, there looks to be many places with higher than expected injuries vs. their rate.

@@ -1,5 +1,5 @@
 ---
-title: "03_Mapped"
+title: "Mapping crash data"
 output:
   html_document: 
     toc: true
@@ -12,9 +12,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Mapping crash data
+Using the processed shapefile of towns in the six-county area around Chicago, we can explore the pedestrian/cycling crash data using choropleth maps. 
 
-We're exploring the pedestrian/cycling crash data using maps. First we need to load in a bunch of libraries and the data. 
+A choropleth map uses color to identify different categories of a set of information. The most recognizable choropleth are ones used for elections, showing states that voted GOP (red) or Democratic (blue).
+
+## Loading data, map styles
 
 ```{r, echo=FALSE}
 
@@ -69,9 +71,9 @@ co6 <- read.csv("data/counties6.csv", stringsAsFactors = FALSE)
 
 ##How we looked at the data geographically
 
-We examined the data geographically in a variety of ways. We mapped total crashes by year and crashes with injuries by year.
+Using the R code included, we created several maps to help us examine if there were geographic patterns hidden in the numbers. 
 
-We calculated the rate of crashes and the rate of injuries for each municipality by 1,000 population, for each year. 
+We mapped total crashes by year and crashes with injuries by year. We also  calculated the rate of crashes and the rate of injuries for each municipality by 1,000 population, for each year. 
 
 ```{r  eval = FALSE}
 
@@ -81,10 +83,11 @@ ill_f$totalinjchg_1415 <- ill_f$total_injrate_2015 - ill_f$total_injrate_2014
 
 ```
 
-Then we started generating maps. 
+Then we started generating maps. Below are some examples.
 
 ##2015 crashes
-For instance, here's the rate per 1000 population for all crashes in 2015, by town. The data is mapped by quintiles, or in five chunks with about the same number of towns in each chunk.
+
+Here's the rate per 1000 population for all crashes in 2015, by town. The data is mapped by quintiles, or in five chunks with about the same number of towns in each chunk.
 
 Here's how that would divide up.
 
@@ -92,7 +95,7 @@ Here's how that would divide up.
 quantile(ill_f$total_rate_2015, probs = seq(0, 1, .2), na.rm=TRUE)
 ```
 
-This shows the break points in our data for quintiles. Each chunk is about 20% of the data (100/5 = 20). The lowest 20%, from 0 to 20%, is 0.04 to 0.18. The highest 20%, from 80 to 100%, is from 0.49 to 4.81. 
+This shows the break points in our data for quintiles. Each chunk is about 20% of the data (100/5 = 20). The lowest 20%, from 0 to 20%, is 0.04 to 0.18. The highest 20% is from 0.49 to 4.81. 
 
 Here's what that looks like on the map.
 

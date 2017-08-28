@@ -1,5 +1,5 @@
 ---
-title: "02_Map_prep"
+title: "Prepping the data for mapping"
 output:
   html_document: 
     toc: true
@@ -13,9 +13,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Prepping the data for mapping
-
-The data needs to be matched up with geographies in the form of shapefiles. Shapefiles are the electronic files that contain not just the shape of a place, but also any data that's associated with that place.
+In order to view the data geographically, or on a map, it needs to be matched up with geographies in the form of shapefiles. Shapefiles are the electronic files that contain not just the shape of a place, but also any data that's associated with that place.
 
 First we load in the libraries we need and our data.
 
@@ -31,22 +29,28 @@ df <- read_csv("data/all_crashData_0809.csv")
 
 ```
 
-Now let's load in the shapefiles.
+
+##Working with shapefiles
+
 
 ```{r}
 
 ill <- readOGR(dsn = "sixCoplaces/smaller2.shp")
 
+```
+
+smaller2.shp contains places - meaning towns and other municipalities - in the six-county area. Shapefiles can be very large and detailed but the shapes in this have been simplified using a mapping program called Qgis. By simplified, we mean the shapes have been reduced in complexity - they have fewer points, which keeps the file size down.
+
+The shapes aren't going to be accurate to the square foot, but they're still representative of the municipality.
+
+Each place in the shapefile is associated with information. That information in the file can be accessed using the "@" sign instead of a "$" for dataframes. And, it's called "data".
+
+```{r}
+
 head(ill@data, n = 10)
 summary(ill@data)
 
 ```
-
-smaller2.shp are the places - meaning towns and other municipalities - in the six-county area. Shapefiles can be very large and detailed, the shapes in he shapes have been simplified in a mapping program called Qgis. By simplified, we mean the shapes have been reduced in complexity - they have fewer points, which keeps the file size down.
-
-The shapes aren't going to be accurate to the square foot, but they're still representative of the municipality.
-
-The data in the file can be accessed using the "@" sign instead of a "$" for dataframes. And, it's called "data".
 
 We can see the shapes using the "plot" command.
 
@@ -58,7 +62,7 @@ plot(ill)
 
 ##Checking the data
 
-We can test how well the data will match up. We'll see if the town names in ill@data match up with the town names in our dataframe.
+We can test how well our data will match up with the data in the shapefile. We'll see if the town names in ill@data match up with the town names in our dataframe.
 
 ```{r}
 
@@ -68,13 +72,15 @@ ill$NAME10 %in% df$town
 
 That results in a lot of "false" results, where there was no match for a place.
 
-We ended up exporting the data and looking at it in excel. We found that all the towns in our data set match up with the geo data. The false results were towns for which we had no data.
+We ended up exporting the data and looking at it in excel. We found that all the towns in our data set match up with the towns in the shapefile. The false results were towns for which we had no data.
 
-##Reworking the data
+##Reworking the data for mapping
 
-The next problem is reworking our data so we can match it up a town. If you look at the dataframe, you'll see that each town has up to four rows (one for each year). We need each town to have only one row, to match up with the one geography.
+The next problem is reworking our data so we can match it up a town. 
 
-First we grab the data by year
+In our dataframe, each town has up to four rows - one for each year. We need each town to have only one row to match up with the one geography.
+
+First we grabbed the data by year
 
 ```{r}
 
@@ -85,7 +91,7 @@ df2015 <- df[df$year == 2015,]
 
 ```
 
-Then we need to rename the columns so their names aren't duplicated. While we're at it, we'll delete or null some columns we don't need anymore.
+Then we renamed the columns so their names aren't duplicated. We also deleted or nulled some unneeded columns.
 
 ```{r}
 
@@ -164,9 +170,9 @@ df2015$year = NULL
 
 ```
 
-Then we can take those new dataframes and join them to the geo data
 
-We'll also delete out some columns from the geo data that we don't need anymore.
+With that, we joined our dated columns to the data in the shapefile. We also deleted some unneeded columns from the shapefile, saved the data and then read it back in.
+
 
 ```{r}
 
@@ -183,23 +189,16 @@ ill@data$change2014 <- NULL
 ill@data$change20_1 <- NULL
 names(ill)
 
-```
-
-Now let's save the new dataframe and read it back in.
-
-```{r}
-
 write_csv(ill@data,"data/mapdata.csv")
 cycped <- read.csv("data/mapdata.csv", stringsAsFactors = FALSE)
 head(cycped)
 
 ```
 
-Just a few more steps. 
 
-##Creating the map dataframe
+##Creating the dataframe for mapping
 
-Now we take the shapefile and process it so we can do mapping in R.
+In order to use the shapefile with R's ggplot2 graphical package, we need to process it. 
 
 ```{r}
 
@@ -207,7 +206,12 @@ ill_f <- fortify(ill, region="GEOID10")
 
 ```
 
-Once we do that, we need to rejoin the data we saved to the new geo file. One minor thing we have to do is set up the geoid number in the new geo file as a number, so that we can join it with the geoid in our data file (which is already a recognized as a number)
+
+Once we do that, we need to rejoin the data we saved to the new dataframe called ill_f. 
+
+To do that, the GEOID number in the new dataframe needs to be made a number, so that we can join it with the GEOID in our data file, which is already a recognized as a number.
+
+Then we can write the dataframe out to a csv to use for mapping.
 
 ```{r}
 
@@ -215,18 +219,11 @@ ill_f$id <- as.numeric(as.character(ill_f$id))
 
 ill_f <- left_join(ill_f, cycped, by = c('id' = 'GEOID10'))
 
-```
-
-Now that it's joined, we write the file out as a csv so we can use it for mapping.
-
-```{r}
-
 write_csv(ill_f,"data/ill_f.csv")
 
 ```
 
-
-Finally, let's import and process a shapefile of the six counties, to make it easier to recognize where things are.
+Finally, we import and process a shapefile of the six counties. We'll put this on top of the places layer of any map we do to make it easier to recognize where things are.
 
 ```{r}
 
@@ -237,4 +234,3 @@ write_csv(co6,"data/counties6.csv")
 
 ```
 
-Now we can do some exploratory mapping to see how the data plays out across the region. 

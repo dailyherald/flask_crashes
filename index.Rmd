@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "How we examined data on pedestrian, cyclist accidents"
 output:
   html_document: 
     toc: true
@@ -11,8 +11,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-#How we examined data on pedestrian, cyclist accidents
 
 ##Getting the data
 
@@ -30,7 +28,7 @@ In excel, we merged the two datasets together. That involved a few steps.
 
 * Not every town in the six-county area around Chicago was included, and not every town included had stats for each year. And town names were non-standard (No Aurora for North Aurora). So we sorted the two sets each by year then by town name and then painstakingly matched the two sets up row-by-row, using a logical "if" statement to help us see when names matched.
 
-* In retrospect, we could have brought the data into R and merged it there instead of doing it line-by-line. Overall may have saved us about an hout? But it's not that large a dataset, and it was worth taking the time to look at it line-by-line. 
+* In retrospect, we could have brought the data into R and merged it there instead of doing it line-by-line. Overall may have saved us about an hour? But it's not that large a dataset and we still would have needed to go back in and add data that wasn't able to be joined. Plus it was worth taking the time to look at the information line-by-line. 
 
 * With the two data sets combined by town and years, we were able to get a complete list of towns. We downloaded 5-year population estimates from the American Community Survey for each of the four years. Then we matched those town names up with our dataset's town names in excel to create a master list of towns. 
 

@@ -11,7 +11,7 @@
 
 
 
-<title>01_plotting</title>
+<title>Examining the crash data</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -297,19 +297,20 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">01_plotting</h1>
+<h1 class="title toc-ignore">Examining the crash data</h1>
 
 </div>
 
 
-<div id="examining-the-crash-data" class="section level1">
-<h1>Examining the crash data</h1>
-<div id="loading-the-data-in-r" class="section level2">
-<h2>Loading the data in R</h2>
-<p>One of the concerns we had with the data is that we would basically be looking at towns with high populations - the higher the population, the more pedestrian and cyclist accidents there would be.</p>
+<div id="normalizing-the-data" class="section level2">
+<h2>Normalizing the data</h2>
+<p>One of the concerns we had is that we would basically be looking at towns with high populations - the higher the population, the more pedestrian and cyclist accidents there would be.</p>
 <p>We used the population data for each year to compute the rate of cyclist crashes, pedestrican crashes and total crashes per 1,000 population.</p>
 <p>To do this, according to Numbers in the Newsroom (available <a href="https://store.ire.org/products/numbers-in-the-newsroom-using-math-and-statistics-in-news-second-edition-e-version">here</a> from the IRE), you take the number of crashes and divide by the population. Then multiply that number by 1000.</p>
-<p>This way we can compare more than just the raw numbers.</p>
+<p>This way we can compare more than just the raw numbers. And, we can get a bit more of an apples-to-apples comparison between large and small towns.</p>
+</div>
+<div id="working-in-r" class="section level2">
+<h2>Working in R</h2>
 <p>Start with loading the libraries we need along with the data:</p>
 <pre class="r"><code># load the libraries 
 library(readr)
@@ -337,13 +338,12 @@ df &lt;- read_csv(&quot;data/all_crashData_0809.csv&quot;)</code></pre>
 ##   ped_rate = col_double(),
 ##   total_rate = col_double()
 ## )</code></pre>
-<p>Then before we get started, let’s select everything except Chicago as those totals are far higher than our surburban numbers.</p>
+<p>Select everything except Chicago as those totals are far higher than our surburban numbers, which will skew our visualizations.</p>
 <pre class="r"><code>df &lt;- df[df$town != &quot;Chicago&quot;,]</code></pre>
-<p>So we understand, we’re looking at suburban crashes.</p>
 </div>
 <div id="charting-density" class="section level2">
 <h2>Charting density</h2>
-<p>We’ll look at the summary, but also store the results of that summary call in a dataframe.</p>
+<p>Summary gives us a look at each column, including the mean and median. In case we want to reference that later, we store the results of that summary call in a dataframe.</p>
 <pre class="r"><code>dfsum &lt;- data.frame(unclass(summary(df)), check.names = FALSE, stringsAsFactors = FALSE)
 dfsum</code></pre>
 <pre><code>##                 town              town2           year      cycle_total
@@ -388,11 +388,11 @@ dfsum</code></pre>
   facet_grid(. ~ factor(year))</code></pre>
 <pre><code>## Warning: Removed 90 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="01_plotting_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>We also looked at charts for cyclist crashes and total crashes, as well as the rates for these. For the most part, the shape of the data was about the same - many places had a few amouts of each and few places had many amounts.</p>
+<p>We also looked at charts for cyclist crashes and total crashes, as well as the rates for these. For the most part, the shape of the data was about the same - many places had a few amounts of each and a few places had many amounts.</p>
 </div>
 <div id="comparing-to-population" class="section level2">
 <h2>Comparing to population</h2>
-<p>Let’s take a look at the data compared to total population. Here’s total cycle crashes vs. population, by year.</p>
+<p>We used scatter plots to compare to total population. Here’s total cycle crashes vs. population, by year.</p>
 <pre class="r"><code>qplot(pop,cycle_total,
       data=df,
       alpha=I(.25)) + 
@@ -402,14 +402,14 @@ dfsum</code></pre>
 <pre><code>## Warning: Removed 115 rows containing missing values (geom_point).</code></pre>
 <p><img src="01_plotting_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>As expected, places with higher populations generally had higher numbers of cycle crashes.</p>
-<p>But what happens when we use the rate per 1000?</p>
+<p>Comparing the crash rate per 1000 yielded different results.</p>
 <pre class="r"><code>qplot(pop,cycle_rate,
       data=df,
       alpha=I(.25)) + 
   stat_smooth(method=&quot;lm&quot;) +
   facet_grid(. ~ factor(year))</code></pre>
 <p><img src="01_plotting_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>That’s a very different result. Let’s exclude rates above 2 since those are low popluation places where a single accident would throw things off.</p>
+<p>Here we exclude rates above 2 since those are low popluation places where a single accident would yield a high rate.</p>
 <pre class="r"><code>dfa &lt;- df[df$total_rate &lt; 2,]
 
 qplot(pop,cycle_rate,
@@ -475,9 +475,7 @@ qplot(pop,cycle_rate,
   stat_smooth(method=&quot;lm&quot;) +
   facet_grid(. ~ factor(year))</code></pre>
 <p><img src="01_plotting_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>Generally it looks like the higher the crash rate, the more injuries - which could be assumed. But again, there looks to be many places with higher than expected injuries vs. their rate.</p>
-<p>So it looks like it’s not only about population.</p>
-</div>
+<p>Generally it looks like the higher the crash rate, the more injuries - which might be expected. But again, there looks to be many places with higher than expected injuries vs. their rate.</p>
 </div>
 
 

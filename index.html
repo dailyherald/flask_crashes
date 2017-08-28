@@ -11,7 +11,7 @@
 
 
 
-<title>Introduction</title>
+<title>How we examined data on pedestrian, cyclist accidents</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -297,13 +297,11 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Introduction</h1>
+<h1 class="title toc-ignore">How we examined data on pedestrian, cyclist accidents</h1>
 
 </div>
 
 
-<div id="how-we-examined-data-on-pedestrian-cyclist-accidents" class="section level1">
-<h1>How we examined data on pedestrian, cyclist accidents</h1>
 <div id="getting-the-data" class="section level2">
 <h2>Getting the data</h2>
 <p>Transportation writer Marni Pyke obtained two pdf files that reported stats on 1) pedestrian and 2) cyclist crashes with vehicles by town from 2012 to 2015.</p>
@@ -316,7 +314,7 @@ div.tocify {
 <ul>
 <li><p>We used a pivot table to combine figures for towns with boundaries that crossed counties.</p></li>
 <li><p>Not every town in the six-county area around Chicago was included, and not every town included had stats for each year. And town names were non-standard (No Aurora for North Aurora). So we sorted the two sets each by year then by town name and then painstakingly matched the two sets up row-by-row, using a logical “if” statement to help us see when names matched.</p></li>
-<li><p>In retrospect, we could have brought the data into R and merged it there instead of doing it line-by-line. Overall may have saved us about an hout? But it’s not that large a dataset, and it was worth taking the time to look at it line-by-line.</p></li>
+<li><p>In retrospect, we could have brought the data into R and merged it there instead of doing it line-by-line. Overall may have saved us about an hour? But it’s not that large a dataset and we still would have needed to go back in and add data that wasn’t able to be joined. Plus it was worth taking the time to look at the information line-by-line.</p></li>
 <li><p>With the two data sets combined by town and years, we were able to get a complete list of towns. We downloaded 5-year population estimates from the American Community Survey for each of the four years. Then we matched those town names up with our dataset’s town names in excel to create a master list of towns.</p></li>
 <li><p>ACS place population estimates include special census areas (CDPs) that are annoying for this kind of work because some of them are named the same as incorporated towns - in this case Willowbrook and Wilmington. We removed those two CDPs from the population sets, the list of all towns and (eventually) the shapefile we used for mapping.</p></li>
 <li><p>We exported the town list (alltowns.csv) and the data by year (y2012.csv, y2013.csv etc)</p></li>
@@ -334,7 +332,6 @@ df2 &lt;- read_csv(&quot;data/pop2015.csv&quot;)
 df3 &lt;- merge(x = df1, y = df2, by = &quot;town&quot;, all.x = TRUE)
 write_csv(df3,&quot;data/join2015.csv&quot;)</code></pre>
 <p>We brought the four files into all_crashData_0809.xlsx, where we ran pivot tables to get totals for each town and each year. We also added a tab for unicorporated numbers, which we did not include with the town or year data.</p>
-</div>
 </div>
 
 
