@@ -1,0 +1,1816 @@
+<!DOCTYPE HTML>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width" />
+
+  <title>
+    Pedestrian and cyclist crashes
+  </title>
+
+    <!-- LEAFLET for mapping -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+    <!-- <link rel="stylesheet" href="/static/normalize.css" /> -->
+    <link rel="stylesheet" href="static/normalize.css" />
+
+    <!-- BOOTSTRAP Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- <script type="text/javascript" src="/static/jquery-1.11.3.min.js"></script>-->
+    <script type="text/javascript" src="static/jquery-1.11.3.min.js"></script>
+
+ 
+    <!--Begin Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.js"></script>
+    <!--end Datatables-->
+
+
+    <!-- This is my API key, for personal use. Need to comment this out for development, but initiate it for production  
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjc-UIpOjUgh456Dj9HMqXQG13cJ7EF7o"></script>
+
+    <script src="/static/Google.js"></script>
+
+    -->
+
+    <!--<link rel="stylesheet" href="/static/newsArt.css" />-->
+    <link rel="stylesheet" href="static/newsArt.css" />
+
+<script>
+var $ = jQuery;
+</script>
+
+<script>
+
+$(document).ready(function() {
+    $('#gfx').DataTable( {
+      responsive: true,
+      "order": [[ 1, "desc" ]],
+      "iDisplayLength": 25
+      } );
+} );
+
+</script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top" style="margin : 0 !important;">
+    <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <!--<img alt="Brand" src="/static/img/dh.png"></a>-->
+            <img alt="Brand" src="static/img/dh.png"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="http://www.dailyherald.com" target="_blank">Daily Herald</a></li>
+                <li><a href="http://reportcards.dailyherald.com/gfx/" target="_blank">Daily Herald News Art</a></li>
+            </ul>
+        </div>
+    </div><!-- end container  <h1 style="color:white;font-size:60px;"><strong>Main project headlining</strong></h1>-->
+</nav>
+
+
+
+<div style="background-color:black;padding:20px;">
+    <div class="row">
+        <div class="col-md-12">
+            <br>
+            <p style="color:white; text-align:center;"><span style="color:red"><strong>LOGO TEXT HERE</strong></span> | Continue logo text here</p>
+            <!--<img src="/static/img/crossings.jpg" class="img-responsive center-block"><br>-->
+            <img src="static/img/crossings.jpg" class="img-responsive center-block"><br>
+           
+            <h1 class="headstyle">Main project headlining</h1>
+            <br>
+            <h3 style="color:white; font-size:26px; text-align:center;">Pedestrian and cyclist crashes in the suburbs, 2012-2015</h3><br>
+            <div class = "row">
+                <div class="col-sm-6 col-xs-12 col-centered">
+                    <table style="color:white;width:100%;border-collapse: separate;
+    border-spacing: 10px 0px;" >
+                        <thead>
+                            <th class="thCENT">TOTAL<br>CRASHES</th>
+                            <th class="thCENT">CRASHES<br>WITH INJURIES</th>
+                            <th class="thCENT">CRASHES</br>WITH FATALITIES</th>
+                        </thead>
+                        <tbody>
+                            <tr><td class="tdCENT"><strong>9,868</strong></td>
+                                <td class="tdCENT"><strong>9,290</td>
+                                <td class="tdCENT"><strong>250</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <p class="source" style="color:white;text-align:center;">Note: Suburban totals include unicorporated areas. Data from Chicago is included below.</p>
+                </div>
+            </div>
+                    <br>
+
+
+            <div class = "row">
+                <div class="col-sm-6 col-xs-12"><span class="align-middle">
+                        
+                        <p style="color:white;font-size:16px;">
+                        First of two side-by-side columns below the main headline. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.</p>
+                        <hr style="color:white;">
+                        <h4 style="color:white;">Map key</h4>
+                        <p>
+                            <style type="text/css">
+                                div.bar {
+                                    display: inline-block;
+                                    width: 12px;
+                                    height: 12px;
+                                    border: 1px solid;
+                                    border-color:white;
+                                    opacity: 0.8;
+                                    }
+                                .cont2 {
+                                    background-color: white;
+                                    }
+                                .cont3 {
+                                    background-color: #dfc27d;
+                                    }
+                                .cont4 {
+                                    background-color: #80cdc1;
+                                    }
+                                .cont5 {
+                                    background-color: #018571;
+                                    }
+                            </style>
+                                <div class="bar cont5"></div> <span style="color:white;">Towns with five or more crashes with fatalities; crashes with injuries.</span></br>
+                                <div class="bar cont4"></div> <span style="color:white;">Towns with fewer than five crashes with fatalities; crashes with injuries.</span><br>
+                                <div class="bar cont3"></div> <span style="color:white;">Towns with crashes with injuries only.</span><br>
+                                <div class="bar cont2"></div> <span style="color:white;">No data available.</span>
+                            </p>
+                        <p class="small" style="color:white;">Note: South Barrington reported one crash with a fatality, but no crashes with injuries.</p> 
+                </span>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <div id="pageMap" style="width:100%; height:450px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container" >
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Vehicle crashes with pedestrians and cyclists<br><small>Ordered by total crashes 2012-2015.</small></h1>
+            <p class="topmargin"><strong>The list below is interactive: </strong><span style="color:red">Sort</span> the list by clicking on the column headings, or <span style="color:red">look for your municipality</span> using the search box. You can also <span style="color:red">choose to view</span> more at a time with the "Show entries" box.</strong></p>
+            <p class="topmargin"><strong><span style="color:red">Click the municipality name</span></strong> to view more complete statistics for each year available.</p>
+            <p>
+                <table id="gfx" class="table table-hover table-striped table-condensed display" width="100%" ><thead>
+                        <th class="thLEFT text-nowrap">Town</th>
+                        <th>Total crashes</th>
+                        <th>Crashes<br>with injuries</th>
+                        <th>Crashes<br>with fatalities</th>
+                    </thead>
+                    <tbody> <!-- be sure to specify index.html or it will not work with freeze -->
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="1/index.html">Chicago</a></td>
+                            <td>17957</td>
+                            <td>16835</td>
+                            <td>178</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="2/index.html">Evanston</a></td>
+                            <td>422</td>
+                            <td>407</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="3/index.html">Aurora</a></td>
+                            <td>371</td>
+                            <td>358</td>
+                            <td>8</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="4/index.html">Cicero</a></td>
+                            <td>321</td>
+                            <td>300</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="5/index.html">Joliet</a></td>
+                            <td>283</td>
+                            <td>271</td>
+                            <td>5</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="6/index.html">Berwyn</a></td>
+                            <td>262</td>
+                            <td>252</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="7/index.html">Oak Park</a></td>
+                            <td>259</td>
+                            <td>248</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="8/index.html">Skokie</a></td>
+                            <td>240</td>
+                            <td>226</td>
+                            <td>9</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="9/index.html">Elgin</a></td>
+                            <td>207</td>
+                            <td>194</td>
+                            <td>7</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="10/index.html">Naperville</a></td>
+                            <td>200</td>
+                            <td>191</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="11/index.html">Waukegan</a></td>
+                            <td>194</td>
+                            <td>184</td>
+                            <td>7</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="12/index.html">Uninc. Cook County</a></td>
+                            <td>188</td>
+                            <td>168</td>
+                            <td>9</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="13/index.html">Des Plaines</a></td>
+                            <td>164</td>
+                            <td>152</td>
+                            <td>9</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="14/index.html">Arlington Heights</a></td>
+                            <td>125</td>
+                            <td>122</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="15/index.html">Harvey</a></td>
+                            <td>124</td>
+                            <td>114</td>
+                            <td>6</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="16/index.html">Niles</a></td>
+                            <td>110</td>
+                            <td>103</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="17/index.html">Oak Lawn</a></td>
+                            <td>110</td>
+                            <td>102</td>
+                            <td>5</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="18/index.html">Park Ridge</a></td>
+                            <td>108</td>
+                            <td>104</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="19/index.html">Glenview</a></td>
+                            <td>97</td>
+                            <td>96</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="20/index.html">Schaumburg</a></td>
+                            <td>96</td>
+                            <td>93</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="21/index.html">Chicago Heights</a></td>
+                            <td>91</td>
+                            <td>83</td>
+                            <td>7</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="22/index.html">Elmhurst</a></td>
+                            <td>91</td>
+                            <td>89</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="23/index.html">Bolingbrook</a></td>
+                            <td>90</td>
+                            <td>84</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="24/index.html">Wheaton</a></td>
+                            <td>88</td>
+                            <td>82</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="25/index.html">Wilmette</a></td>
+                            <td>84</td>
+                            <td>78</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="26/index.html">Crystal Lake</a></td>
+                            <td>83</td>
+                            <td>76</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="27/index.html">Melrose Park</a></td>
+                            <td>81</td>
+                            <td>79</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="28/index.html">Norridge</a></td>
+                            <td>80</td>
+                            <td>70</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="29/index.html">Maywood</a></td>
+                            <td>80</td>
+                            <td>76</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="30/index.html">Mount Prospect</a></td>
+                            <td>78</td>
+                            <td>72</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="31/index.html">Downers Grove</a></td>
+                            <td>78</td>
+                            <td>77</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="32/index.html">Calumet City</a></td>
+                            <td>78</td>
+                            <td>76</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="33/index.html">Bridgeview</a></td>
+                            <td>77</td>
+                            <td>74</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="34/index.html">Palatine</a></td>
+                            <td>77</td>
+                            <td>65</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="35/index.html">Uninc. DuPage County</a></td>
+                            <td>77</td>
+                            <td>71</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="36/index.html">Forest Park</a></td>
+                            <td>75</td>
+                            <td>72</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="37/index.html">Uninc. Will County</a></td>
+                            <td>75</td>
+                            <td>68</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="38/index.html">Wheeling</a></td>
+                            <td>73</td>
+                            <td>70</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="39/index.html">Lincolnwood</a></td>
+                            <td>70</td>
+                            <td>65</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="40/index.html">Lombard</a></td>
+                            <td>68</td>
+                            <td>65</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="41/index.html">Elmwood Park</a></td>
+                            <td>65</td>
+                            <td>63</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="42/index.html">Tinley Park</a></td>
+                            <td>65</td>
+                            <td>63</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="43/index.html">Highland Park</a></td>
+                            <td>64</td>
+                            <td>63</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="44/index.html">Evergreen Park</a></td>
+                            <td>62</td>
+                            <td>61</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="45/index.html">Northbrook</a></td>
+                            <td>62</td>
+                            <td>61</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="46/index.html">Blue Island</a></td>
+                            <td>61</td>
+                            <td>55</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="47/index.html">La Grange</a></td>
+                            <td>60</td>
+                            <td>59</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="48/index.html">Glen Ellyn</a></td>
+                            <td>60</td>
+                            <td>58</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="49/index.html">Zion</a></td>
+                            <td>60</td>
+                            <td>57</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="50/index.html">Hoffman Estates</a></td>
+                            <td>59</td>
+                            <td>57</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="51/index.html">Morton Grove</a></td>
+                            <td>57</td>
+                            <td>51</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="52/index.html">Hanover Park</a></td>
+                            <td>57</td>
+                            <td>54</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="53/index.html">Glendale Heights</a></td>
+                            <td>56</td>
+                            <td>56</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="54/index.html">Bellwood</a></td>
+                            <td>53</td>
+                            <td>51</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="55/index.html">Elk Grove Village</a></td>
+                            <td>53</td>
+                            <td>48</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="56/index.html">River Grove</a></td>
+                            <td>52</td>
+                            <td>47</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="57/index.html">Franklin Park</a></td>
+                            <td>52</td>
+                            <td>48</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="58/index.html">St. Charles</a></td>
+                            <td>51</td>
+                            <td>48</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="59/index.html">Streamwood</a></td>
+                            <td>50</td>
+                            <td>48</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="60/index.html">Dolton</a></td>
+                            <td>49</td>
+                            <td>48</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="61/index.html">Addison</a></td>
+                            <td>48</td>
+                            <td>47</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="62/index.html">Burbank</a></td>
+                            <td>48</td>
+                            <td>48</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="63/index.html">Uninc. Lake County</a></td>
+                            <td>48</td>
+                            <td>42</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="64/index.html">River Forest</a></td>
+                            <td>47</td>
+                            <td>46</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="65/index.html">Orland Park</a></td>
+                            <td>44</td>
+                            <td>37</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="66/index.html">Brookfield</a></td>
+                            <td>43</td>
+                            <td>40</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="67/index.html">Carol Stream</a></td>
+                            <td>43</td>
+                            <td>40</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="68/index.html">Buffalo Grove</a></td>
+                            <td>41</td>
+                            <td>41</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="69/index.html">Schiller Park</a></td>
+                            <td>39</td>
+                            <td>36</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="70/index.html">Worth</a></td>
+                            <td>39</td>
+                            <td>38</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="71/index.html">Gurnee</a></td>
+                            <td>39</td>
+                            <td>36</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="72/index.html">Geneva</a></td>
+                            <td>38</td>
+                            <td>34</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="73/index.html">McHenry</a></td>
+                            <td>38</td>
+                            <td>36</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="74/index.html">Uninc. McHenry County</a></td>
+                            <td>38</td>
+                            <td>32</td>
+                            <td>5</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="75/index.html">Lansing</a></td>
+                            <td>37</td>
+                            <td>35</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="76/index.html">Romeoville</a></td>
+                            <td>37</td>
+                            <td>32</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="77/index.html">Villa Park</a></td>
+                            <td>36</td>
+                            <td>35</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="78/index.html">Mundelein</a></td>
+                            <td>36</td>
+                            <td>31</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="79/index.html">Midlothian</a></td>
+                            <td>35</td>
+                            <td>31</td>
+                            <td>3</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="80/index.html">Alsip</a></td>
+                            <td>35</td>
+                            <td>32</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="81/index.html">Round Lake Beach</a></td>
+                            <td>35</td>
+                            <td>33</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="82/index.html">Westmont</a></td>
+                            <td>35</td>
+                            <td>33</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="83/index.html">North Chicago</a></td>
+                            <td>35</td>
+                            <td>33</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="84/index.html">Broadview</a></td>
+                            <td>34</td>
+                            <td>32</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="85/index.html">Markham</a></td>
+                            <td>34</td>
+                            <td>33</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="86/index.html">Deerfield</a></td>
+                            <td>34</td>
+                            <td>32</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="87/index.html">Rolling Meadows</a></td>
+                            <td>34</td>
+                            <td>30</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="88/index.html">Woodridge</a></td>
+                            <td>34</td>
+                            <td>33</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="89/index.html">North Riverside</a></td>
+                            <td>33</td>
+                            <td>30</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="90/index.html">Lyons</a></td>
+                            <td>33</td>
+                            <td>30</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="91/index.html">Winnetka</a></td>
+                            <td>33</td>
+                            <td>33</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="92/index.html">Lake Forest</a></td>
+                            <td>33</td>
+                            <td>28</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="93/index.html">Bensenville</a></td>
+                            <td>32</td>
+                            <td>30</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="94/index.html">Riverside</a></td>
+                            <td>32</td>
+                            <td>31</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="95/index.html">Riverdale</a></td>
+                            <td>32</td>
+                            <td>30</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="96/index.html">Summit</a></td>
+                            <td>32</td>
+                            <td>29</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="97/index.html">Homewood</a></td>
+                            <td>32</td>
+                            <td>29</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="98/index.html">Libertyville</a></td>
+                            <td>32</td>
+                            <td>32</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="99/index.html">Uninc. Kane County</a></td>
+                            <td>32</td>
+                            <td>28</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="100/index.html">Wood Dale</a></td>
+                            <td>31</td>
+                            <td>29</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="101/index.html">South Holland</a></td>
+                            <td>31</td>
+                            <td>26</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="102/index.html">Lisle</a></td>
+                            <td>31</td>
+                            <td>28</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="103/index.html">Carpentersville</a></td>
+                            <td>31</td>
+                            <td>31</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="104/index.html">Bartlett</a></td>
+                            <td>31</td>
+                            <td>28</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="105/index.html">Stickney</a></td>
+                            <td>30</td>
+                            <td>24</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="106/index.html">Grayslake</a></td>
+                            <td>30</td>
+                            <td>29</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="107/index.html">Bloomingdale</a></td>
+                            <td>30</td>
+                            <td>29</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="108/index.html">Batavia</a></td>
+                            <td>28</td>
+                            <td>27</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="109/index.html">Roselle</a></td>
+                            <td>28</td>
+                            <td>26</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="110/index.html">Matteson</a></td>
+                            <td>28</td>
+                            <td>25</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="111/index.html">Darien</a></td>
+                            <td>28</td>
+                            <td>25</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="112/index.html">Harwood Heights</a></td>
+                            <td>27</td>
+                            <td>25</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="113/index.html">Calumet Park</a></td>
+                            <td>26</td>
+                            <td>25</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="114/index.html">Hinsdale</a></td>
+                            <td>26</td>
+                            <td>26</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="115/index.html">Plainfield</a></td>
+                            <td>26</td>
+                            <td>25</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="116/index.html">Rosemont</a></td>
+                            <td>25</td>
+                            <td>22</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="117/index.html">Palos Hills</a></td>
+                            <td>25</td>
+                            <td>25</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="118/index.html">Vernon Hills</a></td>
+                            <td>25</td>
+                            <td>23</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="119/index.html">West Chicago</a></td>
+                            <td>25</td>
+                            <td>24</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="120/index.html">Countryside</a></td>
+                            <td>24</td>
+                            <td>23</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="121/index.html">Hickory Hills</a></td>
+                            <td>24</td>
+                            <td>23</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="122/index.html">Hazel Crest</a></td>
+                            <td>24</td>
+                            <td>22</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="123/index.html">Woodstock</a></td>
+                            <td>24</td>
+                            <td>24</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="124/index.html">Stone Park</a></td>
+                            <td>23</td>
+                            <td>22</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="125/index.html">Northlake</a></td>
+                            <td>22</td>
+                            <td>20</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="126/index.html">Oak Brook</a></td>
+                            <td>22</td>
+                            <td>21</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="127/index.html">Westchester</a></td>
+                            <td>22</td>
+                            <td>21</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="128/index.html">Algonquin</a></td>
+                            <td>22</td>
+                            <td>21</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="129/index.html">Warrenville</a></td>
+                            <td>21</td>
+                            <td>19</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="130/index.html">South Elgin</a></td>
+                            <td>21</td>
+                            <td>20</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="131/index.html">Hillside</a></td>
+                            <td>20</td>
+                            <td>18</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="132/index.html">Chicago Ridge</a></td>
+                            <td>20</td>
+                            <td>18</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="133/index.html">Lockport</a></td>
+                            <td>20</td>
+                            <td>18</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="134/index.html">Steger</a></td>
+                            <td>20</td>
+                            <td>19</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="135/index.html">Crestwood</a></td>
+                            <td>19</td>
+                            <td>17</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="136/index.html">Mokena</a></td>
+                            <td>19</td>
+                            <td>19</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="137/index.html">Glencoe</a></td>
+                            <td>18</td>
+                            <td>16</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="138/index.html">Robbins</a></td>
+                            <td>18</td>
+                            <td>16</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="139/index.html">Western Springs</a></td>
+                            <td>18</td>
+                            <td>17</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="140/index.html">New Lenox</a></td>
+                            <td>18</td>
+                            <td>16</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="141/index.html">Prospect Heights</a></td>
+                            <td>18</td>
+                            <td>17</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="142/index.html">La Grange Park</a></td>
+                            <td>17</td>
+                            <td>17</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="143/index.html">Sauk Village</a></td>
+                            <td>17</td>
+                            <td>14</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="144/index.html">Lake Zurich</a></td>
+                            <td>17</td>
+                            <td>17</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="145/index.html">Oak Forest</a></td>
+                            <td>17</td>
+                            <td>15</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="146/index.html">Marengo</a></td>
+                            <td>16</td>
+                            <td>16</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="147/index.html">Justice</a></td>
+                            <td>16</td>
+                            <td>13</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="148/index.html">Itasca</a></td>
+                            <td>15</td>
+                            <td>15</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="149/index.html">Beach Park</a></td>
+                            <td>15</td>
+                            <td>13</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="150/index.html">Shorewood</a></td>
+                            <td>14</td>
+                            <td>13</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="151/index.html">Round Lake</a></td>
+                            <td>14</td>
+                            <td>14</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="152/index.html">Lake in the Hills</a></td>
+                            <td>14</td>
+                            <td>14</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="153/index.html">Huntley</a></td>
+                            <td>14</td>
+                            <td>13</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="154/index.html">Crest Hill</a></td>
+                            <td>14</td>
+                            <td>10</td>
+                            <td>4</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="155/index.html">Park Forest</a></td>
+                            <td>14</td>
+                            <td>12</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="156/index.html">Ford Heights</a></td>
+                            <td>13</td>
+                            <td>12</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="157/index.html">Kenilworth</a></td>
+                            <td>13</td>
+                            <td>13</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="158/index.html">Palos Heights</a></td>
+                            <td>13</td>
+                            <td>12</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="159/index.html">Richton Park</a></td>
+                            <td>13</td>
+                            <td>11</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="160/index.html">Antioch</a></td>
+                            <td>13</td>
+                            <td>13</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="161/index.html">Oakbrook Terrace</a></td>
+                            <td>12</td>
+                            <td>11</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="162/index.html">Highwood</a></td>
+                            <td>12</td>
+                            <td>11</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="163/index.html">Lincolnshire</a></td>
+                            <td>12</td>
+                            <td>12</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="164/index.html">Fox Lake</a></td>
+                            <td>12</td>
+                            <td>11</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="165/index.html">Montgomery</a></td>
+                            <td>12</td>
+                            <td>10</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="166/index.html">Round Lake Park</a></td>
+                            <td>11</td>
+                            <td>11</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="167/index.html">Hometown</a></td>
+                            <td>11</td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="168/index.html">Barrington</a></td>
+                            <td>11</td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="169/index.html">Harvard</a></td>
+                            <td>11</td>
+                            <td>11</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="170/index.html">Berkeley</a></td>
+                            <td>11</td>
+                            <td>11</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="171/index.html">Burr Ridge</a></td>
+                            <td>11</td>
+                            <td>10</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="172/index.html">Lemont</a></td>
+                            <td>11</td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="173/index.html">Cary</a></td>
+                            <td>11</td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="174/index.html">Willowbrook</a></td>
+                            <td>11</td>
+                            <td>11</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="175/index.html">Park City</a></td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="176/index.html">Clarendon Hills</a></td>
+                            <td>10</td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="177/index.html">Frankfort</a></td>
+                            <td>10</td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="178/index.html">Lynwood</a></td>
+                            <td>10</td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="179/index.html">East Dundee</a></td>
+                            <td>9</td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="180/index.html">Posen</a></td>
+                            <td>9</td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="181/index.html">Winfield</a></td>
+                            <td>9</td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="182/index.html">West Dundee</a></td>
+                            <td>9</td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="183/index.html">Long Grove</a></td>
+                            <td>9</td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="184/index.html">Wauconda</a></td>
+                            <td>9</td>
+                            <td>8</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="185/index.html">Lake Bluff</a></td>
+                            <td>8</td>
+                            <td>8</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="186/index.html">North Aurora</a></td>
+                            <td>8</td>
+                            <td>8</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="187/index.html">Northfield</a></td>
+                            <td>8</td>
+                            <td>8</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="188/index.html">Fox River Grove</a></td>
+                            <td>7</td>
+                            <td>6</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="189/index.html">Island Lake</a></td>
+                            <td>7</td>
+                            <td>6</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="190/index.html">University Park</a></td>
+                            <td>7</td>
+                            <td>6</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="191/index.html">Crete</a></td>
+                            <td>7</td>
+                            <td>5</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="192/index.html">Homer Glen</a></td>
+                            <td>7</td>
+                            <td>6</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="193/index.html">Country Club Hills</a></td>
+                            <td>7</td>
+                            <td>7</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="194/index.html">Hodgkins</a></td>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="195/index.html">Merrionette Park</a></td>
+                            <td>6</td>
+                            <td>5</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="196/index.html">Glenwood</a></td>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="197/index.html">Olympia Fields</a></td>
+                            <td>6</td>
+                            <td>5</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="198/index.html">Winthrop Harbor</a></td>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="199/index.html">Inverness</a></td>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="200/index.html">South Chicago Heights</a></td>
+                            <td>6</td>
+                            <td>5</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="201/index.html">Bedford Park</a></td>
+                            <td>5</td>
+                            <td>4</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="202/index.html">Dixmoor</a></td>
+                            <td>5</td>
+                            <td>4</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="203/index.html">Hainesville</a></td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="204/index.html">Rockdale</a></td>
+                            <td>5</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="205/index.html">Burnham</a></td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="206/index.html">Flossmoor</a></td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="207/index.html">Lake Villa</a></td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="208/index.html">Elburn</a></td>
+                            <td>5</td>
+                            <td>4</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="209/index.html">Wilmington</a></td>
+                            <td>5</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="210/index.html">Sleepy Hollow</a></td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="211/index.html">Thornton</a></td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="212/index.html">Willow Springs</a></td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="213/index.html">Johnsburg</a></td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="214/index.html">Lakemoor</a></td>
+                            <td>4</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="215/index.html">Peotone</a></td>
+                            <td>4</td>
+                            <td>4</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="216/index.html">McCook</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="217/index.html">Prairie Grove</a></td>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="218/index.html">Barrington Hills</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="219/index.html">Indian Head Park</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="220/index.html">Richmond</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="221/index.html">Green Oaks</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="222/index.html">Braidwood</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="223/index.html">Hawthorn Woods</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="224/index.html">Campton Hills</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="225/index.html">Channahon</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="226/index.html">Phoenix</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="227/index.html">Round Lake Heights</a></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="228/index.html">Forest View</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="229/index.html">McCullom Lake</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="230/index.html">Kildeer</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="231/index.html">Wonder Lake</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="232/index.html">Sugar Grove</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="233/index.html">Monee</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="234/index.html">Palos Park</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="235/index.html">Manhattan</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="236/index.html">Orland Hills</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="237/index.html">Beecher</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="238/index.html">Godley</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="239/index.html">Hampshire</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="240/index.html">Riverwoods</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="241/index.html">Spring Grove</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="242/index.html">Wadsworth</a></td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="243/index.html">Golf</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="244/index.html">North Barrington</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="245/index.html">Pingree Grove</a></td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="246/index.html">Lake Barrington</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="247/index.html">Lakewood</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="248/index.html">Lindenhurst</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="249/index.html">Mettawa</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="250/index.html">Old Mill Creek</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="251/index.html">South Barrington</a></td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>1</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="252/index.html">Third Lake</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                        <tr><td class="tdLEFT text-nowrap"><a href="253/index.html">Virgil</a></td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </p>
+                
+        </div>
+    </div>
+</div>
+
+<div id="creditBox">
+  <div class="row">
+    <div class="col-md-10 center-block center-blockfloat">
+      <p><small>Daily Herald web app by Tim Broderick <a href="mailto:tbroderick@dailyherald.com">tbroderick@dailyherald.com</a>. Source: Illinois Department of Transportation, Bureau of Safety Programs and Engineering. <br>
+        Data of motor vehicle crashes involving pedestrians and cyclists for the years 2012-2015. Not every town in the six-county area around Chicago was included, and not every town included had stats for each year<br>
+        All files and data are available at our <a href="https://github.com/dailyherald/flask_crashes" target="_blank">github site</a>. A diary of how we looked at the data can be found here. App based on <a href="https://first-news-app.readthedocs.io/en/latest/" target="_blank">First News App</a> by <a href="http://palewi.re/who-is-ben-welsh/" target="_blank">Ben Welsh</a>. 
+      </small></p>
+    </div>
+  </div>
+</div>
+<div id="underfoot"></div>
+
+
+
+<script type="text/javascript">
+
+var map = L.map('pageMap');
+
+/* For productiom map
+
+var GGLstyles = [
+  {"featureType":"all","stylers":[{"saturation":-85},{"gamma":1}]}
+  ];
+
+
+var ggl = new L.Google('ROADMAP', {
+  mapOptions: {
+    styles: GGLstyles
+  }
+});
+
+*/
+
+var osmLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>.'
+});
+
+
+/* $.getJSON("/static/crashes.geojson", function(data) { */
+$.getJSON("static/crashes.geojson", function(data) {
+
+  var geojson = L.geoJson(data, {
+    
+    style: function (feature) {
+        if (feature.properties.mapping_color == "fatal5") {
+          return {
+            fillColor: "#018571",
+            weight: 1,
+            opacity: 1,
+            dashArray: '',
+            fillOpacity: 0.5
+          };
+        } else if (feature.properties.mapping_color == "fatal") {
+          return {
+            fillColor: "#80cdc1",
+            weight: 1,
+            opacity: 1,
+            dashArray: '',
+            fillOpacity: 0.5
+          };
+        } else if (feature.properties.mapping_color == "crash") {
+          return {
+            fillColor: "#dfc27d",
+            weight: 1,
+            opacity: 1,
+            dashArray: '',
+            fillOpacity: 0.5
+          };
+        } else {
+          return {
+            fillColor: "white",
+            weight: 1,
+            opacity: 1,
+            dashArray: '',
+            fillOpacity: 0.5
+          };
+        }
+    },
+
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(
+        '<strong><a href="' + feature.properties.mapping_id + '/index.html">' + feature.properties.mapping_Town + '</strong></a><table class="mapTable table table-striped table-condensed"><tr><td class="tdLEFT">Total crashes</td><td>' + feature.properties.mapping_total_crashes + '</td><tr><td class="tdLEFT">Total with<br>injuries:</td><td>' + feature.properties.mapping_total_inj + '</td><tr><td class="tdLEFT">Total with<br>fatalities</td><td>' + feature.properties.mapping_total_fatal + '</td></tr></table>'
+  
+        );
+    }
+
+
+  });
+
+
+/*
+map.addLayer(ggl);
+*/
+map.setView(new L.LatLng(41.9, -88),9);
+map.addLayer(osmLayer);
+geojson.addTo(map);
+
+});
+
+</script>
+
+</body>
+</html>
