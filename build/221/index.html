@@ -6,7 +6,6 @@
   <title>
     Pedestrian and cyclist crashes - Green Oaks
   </title>
-    <!-- <link rel="stylesheet" href="/static/normalize.css" /> -->
     <link rel="stylesheet" href="../static/normalize.css" />
 
     <!-- BOOTSTRAP Latest compiled and minified CSS -->
@@ -18,8 +17,8 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <!-- <script type="text/javascript" src="/static/jquery-1.11.3.min.js"></script>-->
     <script type="text/javascript" src="../static/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../static/highcharts.js"></script>
 
  
     <!--Begin Datatables -->
@@ -27,7 +26,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/dt-1.10.13/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.js"></script>
     <!--end Datatables-->
 
-    <!--<link rel="stylesheet" href="/static/newsArt.css" />-->
     <link rel="stylesheet" href="../static/newsArt.css" />
 
 
@@ -51,7 +49,6 @@ var $ = jQuery;
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <!--<img alt="Brand" src="/static/img/dh.png"></a>-->
             <img alt="Brand" src="../static/img/dh.png"></a>
         </div>
 
@@ -62,7 +59,8 @@ var $ = jQuery;
                 <li><a href="http://reportcards.dailyherald.com/gfx/" target="_blank">Daily Herald News Art</a></li>
             </ul>
         </div>
-    </div><!-- end container  <h1 style="color:white;font-size:60px;"><strong>Main project headlining</strong></h1>-->
+    </div>
+<!-- end container -->
 </nav>
 
 <br>
@@ -70,8 +68,7 @@ var $ = jQuery;
     <div class="row">
         <div class="col-md-12">
           <p style="text-align:center;"><span style="color:red"><strong>LOGO TEXT HERE</strong></span> | Continue logo text here</p>
-            <!--<img src="/static/img/crossings.jpg" class="img-responsive center-block"><br>-->
-            <img src="../static/img/crossings.jpg" class="img-responsive center-block"><br>
+             <img src="../static/img/crossings.jpg" class="img-responsive center-block"><br>
           <h1 style="text-align:center;"><strong>Green Oaks</strong></h1>
             <div class = "row">
                 <div class="col-sm-6 col-xs-12 col-centered">
@@ -92,6 +89,16 @@ var $ = jQuery;
                 </div>
             </div>
                     <br>
+            <div class = "row">
+                <div class="col-sm-8 col-xs-12 col-centered">
+                    <hr>
+                    <h3>Total crash rate per 1,000 population</h3><br>
+                    <div id="chartDiv"></div>
+                    <p><small>Total crashes is the sum of cyclist and pedestrian crashes for each year. Rate per 1,000 for each municipality calculated using American Community Survey 5-year population estimates. Average rate is average of all municipalities examined.</small></p>
+                </div>
+            </div>
+            <br>
+
 
             <p>
                 <table class="table table-hover table-striped table-condensed display" width="100%" ><thead>
@@ -219,6 +226,54 @@ var $ = jQuery;
   </div>
 </div>
 <div id="underfoot"></div>
+
+<script>
+  var chartRate = new Highcharts.Chart({
+        chart: {
+      renderTo: 'chartDiv',
+      backgroundColor: '#fafafa',
+      height: 325,
+      spacingBottom: 15,
+      spacingTop: 10,
+      spacingLeft: 10,
+      spacingRight: 10,
+            type: 'line'
+        },
+        title: {
+            text: null,
+        },
+        xAxis: {
+            categories: ['2012','2013', '2014', '2015'],
+              labels: {
+                staggerLines: 2
+            }
+        },
+        yAxis: {
+      tickInterval: 0.5,
+      minorTickInterval: 'auto',
+      min: 0,
+      //max: 6,
+            title: {
+                text: 'RATE PER 1,000'
+            }
+        },
+        series: [{
+            name: 'Avg. rate',
+            data: $.map([0.53, 0.55, 0.52, 0.53], function (valueAVG) {
+        return isNaN(valueAVG) ? { y: null } : parseFloat(valueAVG);
+            })
+          }, {  
+            name: 'Green Oaks',
+            data: $.map(["0.52", "N/A", "N/A", "0.26"], function (valueTown) {
+        return isNaN(valueTown) ? { y: null } : parseFloat(valueTown);
+            })
+        }],
+        tooltip: {
+          crosshairs: true,
+          shared: true
+        },
+    });
+</script>
 
 </body>
 </html>

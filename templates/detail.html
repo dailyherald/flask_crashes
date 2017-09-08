@@ -18,6 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="../static/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="../static/highcharts.js"></script>
 
  
     <!--Begin Datatables -->
@@ -88,6 +89,16 @@ var $ = jQuery;
                 </div>
             </div>
                     <br>
+            <div class = "row">
+                <div class="col-sm-8 col-xs-12 col-centered">
+                    <hr>
+                    <h3>Total crash rate per 1,000 population</h3><br>
+                    <div id="chartDiv"></div>
+                    <p><small>Total crashes is the sum of cyclist and pedestrian crashes for each year. Rate per 1,000 for each municipality calculated using American Community Survey 5-year population estimates. Average rate is average of all municipalities examined.</small></p>
+                </div>
+            </div>
+            <br>
+
 
             <p>
                 <table class="table table-hover table-striped table-condensed display" width="100%" ><thead>
@@ -194,11 +205,11 @@ var $ = jQuery;
             </p>
 
           <!-- ..................... -->
-          <!-- use this line for use with local server -->
-          <p><strong><a href="../">RETURN TO MAIN PAGE</a></strong></p>
+          <!-- use this line for use with local server 
+          <p><strong><a href="../">RETURN TO MAIN PAGE</a></strong></p>-->
           	
-          <!-- use this line for use when freezing the app
-          <p><strong><a href="../index.html">RETURN TO MAIN PAGE</a></strong></p>-->
+          <!-- use this line for use when freezing the app-->
+          <p><strong><a href="../index.html">RETURN TO MAIN PAGE</a></strong></p>
           <!-- ..................... -->
         </div>
     </div>
@@ -215,6 +226,54 @@ var $ = jQuery;
   </div>
 </div>
 <div id="underfoot"></div>
+
+<script>
+  var chartRate = new Highcharts.Chart({
+        chart: {
+      renderTo: 'chartDiv',
+      backgroundColor: '#fafafa',
+      height: 325,
+      spacingBottom: 15,
+      spacingTop: 10,
+      spacingLeft: 10,
+      spacingRight: 10,
+            type: 'line'
+        },
+        title: {
+            text: null,
+        },
+        xAxis: {
+            categories: ['2012','2013', '2014', '2015'],
+              labels: {
+                staggerLines: 2
+            }
+        },
+        yAxis: {
+      tickInterval: 0.5,
+      minorTickInterval: 'auto',
+      min: 0,
+      //max: 6,
+            title: {
+                text: 'RATE PER 1,000'
+            }
+        },
+        series: [{
+            name: 'Avg. rate',
+            data: $.map([0.53, 0.55, 0.52, 0.53], function (valueAVG) {
+        return isNaN(valueAVG) ? { y: null } : parseFloat(valueAVG);
+            })
+          }, {  
+            name: '{{ object.Town }}',
+            data: $.map(["{{ object.total_rate_2012 }}", "{{ object.total_rate_2013 }}", "{{ object.total_rate_2014 }}", "{{ object.total_rate_2015 }}"], function (valueTown) {
+        return isNaN(valueTown) ? { y: null } : parseFloat(valueTown);
+            })
+        }],
+        tooltip: {
+          crosshairs: true,
+          shared: true
+        },
+    });
+</script>
 
 </body>
 </html>
