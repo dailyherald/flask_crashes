@@ -7,10 +7,6 @@
     Pedestrian and cyclist crashes
   </title>
 
-    <!-- LEAFLET for mapping -->
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-
     <link rel="stylesheet" href="static/normalize.css" />
 
     <!-- BOOTSTRAP Latest compiled and minified CSS -->
@@ -19,10 +15,16 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+    <script type="text/javascript" src="static/jquery-1.11.3.min.js"></script
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+>
 
-     <script type="text/javascript" src="static/jquery-1.11.3.min.js"></script>
+    <!-- LEAFLET for mapping -->
+      <link rel="stylesheet" href="static/leaflet.css" type="text/css">
+      <script src="static/leaflet.js"></script>
+
 
  
     <!--Begin Datatables -->
@@ -31,12 +33,14 @@
     <!--end Datatables-->
 
 
-    <!-- This is my API key, for personal use. Need to comment this out for development, but initiate it for production  
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjc-UIpOjUgh456Dj9HMqXQG13cJ7EF7o"></script>
+    <!-- This is the google api needed for development. Comment this out for production 
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script> 
+-->
 
-    <script src="{{ url_for('static', filename='Google.js') }}"></script>
+  <!-- This is my API key, for personal use. Need to comment this out for development, but initiate it for production  -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjc-UIpOjUgh456Dj9HMqXQG13cJ7EF7o"></script>
 
-    -->
+    <script src="static/Google.js"></script>
 
     <link rel="stylesheet" href="static/newsArt.css" />
 
@@ -89,10 +93,9 @@ $(document).ready(function() {
     <div class="row">
         <div class="col-md-12">
             <br>
-            <p style="color:white; text-align:center;"><span style="color:red"><strong>LOGO TEXT HERE</strong></span> | Continue logo text here</p>
             <img src="static/img/crossings.jpg" class="img-responsive center-block"><br>
            
-            <h1 class="headstyle">Main project headlining</h1>
+            <h1 class="headstyle">Dangerous pathways</h1>
             <br>
             <h3 style="color:white; font-size:26px; text-align:center;">Pedestrian and cyclist crashes in the suburbs, 2012-2015</h3><br>
             <div class = "row">
@@ -112,7 +115,7 @@ $(document).ready(function() {
                         </tbody>
                     </table>
                     <br>
-                    <p class="source" style="color:white;text-align:center;">Note: Suburban totals include unicorporated areas. Data from Chicago is included below.</p>
+                    <p class="source" style="color:white;text-align:center;">Note: Suburban totals include unicorporated areas. Data from Chicago is included in the map and list below.</p>
                 </div>
             </div>
                     <br>
@@ -122,7 +125,10 @@ $(document).ready(function() {
                 <div class="col-sm-6 col-xs-12"><span class="align-middle">
                         
                         <p style="color:white;font-size:16px;">
-                        First of two side-by-side columns below the main headline. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.</p>
+                        Among the municipalities the Daily Herald examined, the number of total crashes between vehicles and pedestrians or cyclists closely tracks population. The more people in a town, the higher the number of crashes.<br>
+                        But for total fatalities in the years examined (2012-2015), half of municipalities with five or more fatalities were not among the top 10 in population. Nor were Des Plaines, Skokie, Chicago Heights and Oak Lawn among the top 10 municipalities for any of the years examined when calculated by rate of crashes per 1,000. Harvey was among the top 10 total crash rates once, in 2012.<br>
+                        To learn more about these and the other towns examined, select the town in the interactive map or find it in the searchable, sortable list below.
+                        </p>
                         <hr style="color:white;">
                         <h4 style="color:white;">Map key</h4>
                         <p>
@@ -211,7 +217,7 @@ $(document).ready(function() {
 
 var map = L.map('pageMap');
 
-/* For productiom map
+/* For productiom map */
 
 var GGLstyles = [
   {"featureType":"all","stylers":[{"saturation":-85},{"gamma":1}]}
@@ -224,12 +230,12 @@ var ggl = new L.Google('ROADMAP', {
   }
 });
 
-*/
 
-var osmLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+/*var osmLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: 'Data, imagery and map information provided by <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a>.'
-});
+}); */
 
 
 $.getJSON("static/crashes.geojson", function(data) {
@@ -283,11 +289,11 @@ $.getJSON("static/crashes.geojson", function(data) {
   });
 
 
-/*
+
 map.addLayer(ggl);
-*/
+
 map.setView(new L.LatLng(41.9, -88),9);
-map.addLayer(osmLayer);
+/* map.addLayer(osmLayer); */
 geojson.addTo(map);
 
 });
