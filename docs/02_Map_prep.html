@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Prepping the data for mapping</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Pedestrian/cyclist crash data</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Data prep</a>
+</li>
+<li>
+  <a href="01_plotting.html">Plotting</a>
+</li>
+<li>
+  <a href="02_Map_prep.html">Map prep</a>
+</li>
+<li>
+  <a href="03_Mapped.html">Mapping</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Prepping the data for mapping</h1>
+
+</div>
+
+
+<p>In order to view the data geographically, or on a map, it needs to be matched up with geographies in the form of shapefiles. Shapefiles are the electronic files that contain not just the shape of a place, but also any data that’s associated with that place.</p>
+<p>First we load in the libraries we need and our data.</p>
+<pre class="r"><code>library(readr)
+library(ggplot2)
+library(rgdal)</code></pre>
+<pre><code>## Loading required package: sp</code></pre>
+<pre><code>## rgdal: version: 1.2-7, (SVN revision 660)
+##  Geospatial Data Abstraction Library extensions to R successfully loaded
+##  Loaded GDAL runtime: GDAL 2.1.2, released 2016/10/24
+##  Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.3/Resources/library/rgdal/gdal
+##  Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
+##  Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.3/Resources/library/rgdal/proj
+##  Linking to sp version: 1.2-4</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(ggmap)
+
+df &lt;- read_csv(&quot;data/all_crashData_0809.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   town = col_character(),
+##   town2 = col_character(),
+##   year = col_integer(),
+##   cycle_total = col_integer(),
+##   cycle_fatal = col_integer(),
+##   cycle_inj = col_integer(),
+##   ped_total = col_integer(),
+##   ped_fatal = col_integer(),
+##   ped_inj = col_integer(),
+##   total_crashes = col_integer(),
+##   total_inj = col_integer(),
+##   total_fatal = col_integer(),
+##   pop = col_number(),
+##   cycle_rate = col_double(),
+##   ped_rate = col_double(),
+##   total_rate = col_double()
+## )</code></pre>
+<div id="working-with-shapefiles" class="section level2">
+<h2>Working with shapefiles</h2>
+<pre class="r"><code>ill &lt;- readOGR(dsn = &quot;sixCoplaces/smaller2.shp&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;sixCoplaces/smaller2.shp&quot;, layer: &quot;smaller2&quot;
+## with 304 features
+## It has 13 fields</code></pre>
+<p>smaller2.shp contains places - meaning towns and other municipalities - in the six-county area. Shapefiles can be very large and detailed but the shapes in this have been simplified using a mapping program called Qgis. By simplified, we mean the shapes have been reduced in complexity - they have fewer points, which keeps the file size down.</p>
+<p>The shapes aren’t going to be accurate to the square foot, but they’re still representative of the municipality.</p>
+<p>Each place in the shapefile is associated with information. That information in the file can be accessed using the “@” sign instead of a “$” for dataframes. And, it’s called “data”.</p>
+<pre class="r"><code>head(ill@data, n = 10)</code></pre>
+<pre><code>##   STATEFP10 PLACEFP10 PLACENS10 GEOID10     NAME10 PLACE
+## 0        17     82101  02397328 1782101 Wilmington 82101
+## 1        17     74275  02399944 1774275   Symerton 74275
+## 2        17     69758  02399813 1769758  Shorewood 69758
+## 3        17     65442  02399114 1765442 Romeoville 65442
+## 4        17     64902  02399104 1764902   Rockdale 64902
+## 5        17     59052  02399653 1759052    Peotone 59052
+## 6        17     52584  02399470 1752584  New Lenox 52584
+## 7        17     49945  02399381 1749945      Monee 49945
+## 8        17     49854  02399380 1749854     Mokena 49854
+## 9        17     46357  02399240 1746357  Manhattan 46357
+##                 NAME POPESTIMAT POPESTIM_1 POPESTIM_2 change2010
+## 0    Wilmington city       5750       5705       5691        -59
+## 1   Symerton village         87         89         89          2
+## 2  Shorewood village      15669      16515      16948       1279
+## 3 Romeoville village      39684      39754      39706         22
+## 4   Rockdale village       1977       1955       1941        -36
+## 5    Peotone village       4149       4131       4134        -15
+## 6  New Lenox village      24425      25379      26217       1792
+## 7      Monee village       5153       5098       5077        -76
+## 8     Mokena village      18806      19445      20097       1291
+## 9  Manhattan village       7089       7292       7546        457
+##   change20_1 change2014
+## 0        -45        -14
+## 1          2          0
+## 2        846        433
+## 3         70        -48
+## 4        -22        -14
+## 5        -18          3
+## 6        954        838
+## 7        -55        -21
+## 8        639        652
+## 9        203        254</code></pre>
+<pre class="r"><code>summary(ill@data)</code></pre>
+<pre><code>##  STATEFP10   PLACEFP10      PLACENS10      GEOID10   
+##  17:304    00243  :  1   00428803:  1   1700243:  1  
+##            00685  :  1   02357470:  1   1700685:  1  
+##            01010  :  1   02392995:  1   1701010:  1  
+##            01595  :  1   02393000:  1   1701595:  1  
+##            02154  :  1   02393009:  1   1702154:  1  
+##            03012  :  1   02393010:  1   1703012:  1  
+##            (Other):298   (Other) :298   (Other):298  
+##                NAME10        PLACE                            NAME    
+##  Addison          :  1   00243  :  1   Addison village          :  1  
+##  Algonquin        :  1   00685  :  1   Algonquin village        :  1  
+##  Alsip            :  1   01010  :  1   Alsip village            :  1  
+##  Antioch          :  1   01595  :  1   Antioch village          :  1  
+##  Arlington Heights:  1   02154  :  1   Arlington Heights village:  1  
+##  Aurora           :  1   (Other):279   (Other)                  :279  
+##  (Other)          :298   NA&#39;s   : 20   NA&#39;s                     : 20  
+##    POPESTIMAT        POPESTIM_1        POPESTIM_2        change2010      
+##  Min.   :      0   Min.   :      0   Min.   :      0   Min.   :-2636.00  
+##  1st Qu.:   3686   1st Qu.:   3726   1st Qu.:   3727   1st Qu.:  -86.25  
+##  Median :  10444   Median :  10454   Median :  10375   Median :   -8.50  
+##  Mean   :  26088   Mean   :  26325   Mean   :  26247   Mean   :  158.82  
+##  3rd Qu.:  23385   3rd Qu.:  23516   3rd Qu.:  23270   3rd Qu.:  115.75  
+##  Max.   :2697736   Max.   :2718530   Max.   :2704958   Max.   : 7222.00  
+##                                                                          
+##    change20_1        change2014       
+##  Min.   :-2998.0   Min.   :-13572.00  
+##  1st Qu.:    0.0   1st Qu.:  -149.00  
+##  Median :   41.0   Median :   -30.50  
+##  Mean   :  237.1   Mean   :   -78.26  
+##  3rd Qu.:  192.8   3rd Qu.:     0.00  
+##  Max.   :20794.0   Max.   :  1526.00  
+## </code></pre>
+<p>We can see the shapes using the “plot” command.</p>
+<pre class="r"><code>plot(ill)</code></pre>
+<p><img src="02_Map_prep_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="checking-the-data" class="section level2">
+<h2>Checking the data</h2>
+<p>We can test how well our data will match up with the data in the shapefile. We’ll see if the town names in <a href="mailto:ill@data">ill@data</a> match up with the town names in our dataframe.</p>
+<pre class="r"><code>ill$NAME10 %in% df$town</code></pre>
+<pre><code>##   [1]  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [12]  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [23]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [34]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [45]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+##  [56] FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [67]  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
+##  [78] FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [89]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [100]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [111]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [122]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [144]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [155]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE
+## [166]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [177]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [188]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE FALSE
+## [199] FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE  TRUE
+## [210]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [221]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [232]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [243]  TRUE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
+## [254]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [265] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
+## [276] FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+## [287] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [298] FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<p>That results in a lot of “false” results, where there was no match for a place.</p>
+<p>We ended up exporting the data and looking at it in excel. We found that all the towns in our data set match up with the towns in the shapefile. The false results were towns for which we had no data.</p>
+</div>
+<div id="reworking-the-data-for-mapping" class="section level2">
+<h2>Reworking the data for mapping</h2>
+<p>The next problem is reworking our data so we can match it up a town.</p>
+<p>In our dataframe, each town has up to four rows - one for each year. We need each town to have only one row to match up with the one geography.</p>
+<p>First we grabbed the data by year</p>
+<pre class="r"><code>df2012 &lt;- df[df$year == 2012,]
+df2013 &lt;- df[df$year == 2013,]
+df2014 &lt;- df[df$year == 2014,]
+df2015 &lt;- df[df$year == 2015,]</code></pre>
+<p>Then we renamed the columns so their names aren’t duplicated. We also deleted or nulled some unneeded columns.</p>
+<pre class="r"><code>df2012 &lt;- rename(df2012, 
+       cycle_total_2012 = cycle_total,
+       cycle_fatal_2012 = cycle_fatal,
+       cycle_inj_2012 = cycle_inj,
+       ped_total_2012 = ped_total,
+       ped_fatal_2012 = ped_fatal,
+       ped_inj_2012 = ped_inj,
+       total_crashes_2012 = total_crashes,
+       total_inj_2012 = total_inj,
+       total_fatal_2012 = total_fatal,
+       pop_2012 = pop,
+       cycle_rate_2012 = cycle_rate,
+       ped_rate_2012 = ped_rate,
+       total_rate_2012 = total_rate
+       )
+
+df2012$town2 = NULL
+df2012$year = NULL
+
+df2013 &lt;- rename(df2013, 
+                 cycle_total_2013 = cycle_total,
+                 cycle_fatal_2013 = cycle_fatal,
+                 cycle_inj_2013 = cycle_inj,
+                 ped_total_2013 = ped_total,
+                 ped_fatal_2013 = ped_fatal,
+                 ped_inj_2013 = ped_inj,
+                 total_crashes_2013 = total_crashes,
+                 total_inj_2013 = total_inj,
+                 total_fatal_2013 = total_fatal,
+                 pop_2013 = pop,
+                 cycle_rate_2013 = cycle_rate,
+                 ped_rate_2013 = ped_rate,
+                 total_rate_2013 = total_rate
+)
+df2013$town2 = NULL
+df2013$year = NULL
+
+df2014 &lt;- rename(df2014, 
+                 cycle_total_2014 = cycle_total,
+                 cycle_fatal_2014 = cycle_fatal,
+                 cycle_inj_2014 = cycle_inj,
+                 ped_total_2014 = ped_total,
+                 ped_fatal_2014 = ped_fatal,
+                 ped_inj_2014 = ped_inj,
+                 total_crashes_2014 = total_crashes,
+                 total_inj_2014 = total_inj,
+                 total_fatal_2014 = total_fatal,
+                 pop_2014 = pop,
+                 cycle_rate_2014 = cycle_rate,
+                 ped_rate_2014 = ped_rate,
+                 total_rate_2014 = total_rate
+)
+df2014$town2 = NULL
+df2014$year = NULL
+
+df2015 &lt;- rename(df2015, 
+                 cycle_total_2015 = cycle_total,
+                 cycle_fatal_2015 = cycle_fatal,
+                 cycle_inj_2015 = cycle_inj,
+                 ped_total_2015 = ped_total,
+                 ped_fatal_2015 = ped_fatal,
+                 ped_inj_2015 = ped_inj,
+                 total_crashes_2015 = total_crashes,
+                 total_inj_2015 = total_inj,
+                 total_fatal_2015 = total_fatal,
+                 pop_2015 = pop,
+                 cycle_rate_2015 = cycle_rate,
+                 ped_rate_2015 = ped_rate,
+                 total_rate_2015 = total_rate
+)
+df2015$town2 = NULL
+df2015$year = NULL</code></pre>
+<p>With that, we joined our dated columns to the data in the shapefile. We also deleted some unneeded columns from the shapefile, saved the data and then read it back in.</p>
+<pre class="r"><code>ill@data &lt;- left_join(ill@data, df2012, by = c(&#39;NAME10&#39; = &#39;town&#39;))</code></pre>
+<pre><code>## Warning: Column `NAME10`/`town` joining factor and character vector,
+## coercing into character vector</code></pre>
+<pre class="r"><code>ill@data &lt;- left_join(ill@data, df2013, by = c(&#39;NAME10&#39; = &#39;town&#39;))
+ill@data &lt;- left_join(ill@data, df2014, by = c(&#39;NAME10&#39; = &#39;town&#39;))
+ill@data &lt;- left_join(ill@data, df2015, by = c(&#39;NAME10&#39; = &#39;town&#39;))
+
+ill@data$POPESTIMAT &lt;- NULL
+ill@data$POPESTIM_1 &lt;- NULL
+ill@data$POPESTIM_2 &lt;- NULL
+ill@data$change2010 &lt;- NULL
+ill@data$change2014 &lt;- NULL
+ill@data$change20_1 &lt;- NULL
+names(ill)</code></pre>
+<pre><code>##  [1] &quot;STATEFP10&quot;          &quot;PLACEFP10&quot;          &quot;PLACENS10&quot;         
+##  [4] &quot;GEOID10&quot;            &quot;NAME10&quot;             &quot;PLACE&quot;             
+##  [7] &quot;NAME&quot;               &quot;cycle_total_2012&quot;   &quot;cycle_fatal_2012&quot;  
+## [10] &quot;cycle_inj_2012&quot;     &quot;ped_total_2012&quot;     &quot;ped_fatal_2012&quot;    
+## [13] &quot;ped_inj_2012&quot;       &quot;total_crashes_2012&quot; &quot;total_inj_2012&quot;    
+## [16] &quot;total_fatal_2012&quot;   &quot;pop_2012&quot;           &quot;cycle_rate_2012&quot;   
+## [19] &quot;ped_rate_2012&quot;      &quot;total_rate_2012&quot;    &quot;cycle_total_2013&quot;  
+## [22] &quot;cycle_fatal_2013&quot;   &quot;cycle_inj_2013&quot;     &quot;ped_total_2013&quot;    
+## [25] &quot;ped_fatal_2013&quot;     &quot;ped_inj_2013&quot;       &quot;total_crashes_2013&quot;
+## [28] &quot;total_inj_2013&quot;     &quot;total_fatal_2013&quot;   &quot;pop_2013&quot;          
+## [31] &quot;cycle_rate_2013&quot;    &quot;ped_rate_2013&quot;      &quot;total_rate_2013&quot;   
+## [34] &quot;cycle_total_2014&quot;   &quot;cycle_fatal_2014&quot;   &quot;cycle_inj_2014&quot;    
+## [37] &quot;ped_total_2014&quot;     &quot;ped_fatal_2014&quot;     &quot;ped_inj_2014&quot;      
+## [40] &quot;total_crashes_2014&quot; &quot;total_inj_2014&quot;     &quot;total_fatal_2014&quot;  
+## [43] &quot;pop_2014&quot;           &quot;cycle_rate_2014&quot;    &quot;ped_rate_2014&quot;     
+## [46] &quot;total_rate_2014&quot;    &quot;cycle_total_2015&quot;   &quot;cycle_fatal_2015&quot;  
+## [49] &quot;cycle_inj_2015&quot;     &quot;ped_total_2015&quot;     &quot;ped_fatal_2015&quot;    
+## [52] &quot;ped_inj_2015&quot;       &quot;total_crashes_2015&quot; &quot;total_inj_2015&quot;    
+## [55] &quot;total_fatal_2015&quot;   &quot;pop_2015&quot;           &quot;cycle_rate_2015&quot;   
+## [58] &quot;ped_rate_2015&quot;      &quot;total_rate_2015&quot;</code></pre>
+<pre class="r"><code>write_csv(ill@data,&quot;data/mapdata.csv&quot;)
+cycped &lt;- read.csv(&quot;data/mapdata.csv&quot;, stringsAsFactors = FALSE)
+head(cycped)</code></pre>
+<pre><code>##   STATEFP10 PLACEFP10 PLACENS10 GEOID10     NAME10 PLACE
+## 1        17     82101   2397328 1782101 Wilmington 82101
+## 2        17     74275   2399944 1774275   Symerton 74275
+## 3        17     69758   2399813 1769758  Shorewood 69758
+## 4        17     65442   2399114 1765442 Romeoville 65442
+## 5        17     64902   2399104 1764902   Rockdale 64902
+## 6        17     59052   2399653 1759052    Peotone 59052
+##                 NAME cycle_total_2012 cycle_fatal_2012 cycle_inj_2012
+## 1    Wilmington city                1                0              0
+## 2   Symerton village               NA               NA             NA
+## 3  Shorewood village                3                0              3
+## 4 Romeoville village                1                0              1
+## 5   Rockdale village                1                1              0
+## 6    Peotone village               NA               NA             NA
+##   ped_total_2012 ped_fatal_2012 ped_inj_2012 total_crashes_2012
+## 1              1              0            1                  2
+## 2             NA             NA           NA                 NA
+## 3              1              0            1                  4
+## 4              9              1            7                 10
+## 5             NA             NA           NA                  1
+## 6              2              0            2                  2
+##   total_inj_2012 total_fatal_2012 pop_2012 cycle_rate_2012 ped_rate_2012
+## 1              1                0     5918            0.17          0.17
+## 2             NA               NA       NA              NA            NA
+## 3              4                0    15611            0.19          0.06
+## 4              8                1    39175            0.03          0.23
+## 5              0                1     1909            0.52          0.00
+## 6              2                0     4703            0.00          0.43
+##   total_rate_2012 cycle_total_2013 cycle_fatal_2013 cycle_inj_2013
+## 1            0.34                2                0              1
+## 2              NA               NA               NA             NA
+## 3            0.26                1                0              1
+## 4            0.26                6                0              6
+## 5            0.52               NA               NA             NA
+## 6            0.43               NA               NA             NA
+##   ped_total_2013 ped_fatal_2013 ped_inj_2013 total_crashes_2013
+## 1              1              0            1                  3
+## 2             NA             NA           NA                 NA
+## 3              1              0            1                  2
+## 4              3              1            2                  9
+## 5             NA             NA           NA                 NA
+## 6             NA             NA           NA                 NA
+##   total_inj_2013 total_fatal_2013 pop_2013 cycle_rate_2013 ped_rate_2013
+## 1              2                0     6028            0.33          0.17
+## 2             NA               NA       NA              NA            NA
+## 3              2                0    15906            0.06          0.06
+## 4              8                1    39520            0.15          0.08
+## 5             NA               NA       NA              NA            NA
+## 6             NA               NA       NA              NA            NA
+##   total_rate_2013 cycle_total_2014 cycle_fatal_2014 cycle_inj_2014
+## 1            0.50               NA               NA             NA
+## 2              NA               NA               NA             NA
+## 3            0.13                1                0              1
+## 4            0.23                5                0              5
+## 5              NA                1                0              0
+## 6              NA                1                0              1
+##   ped_total_2014 ped_fatal_2014 ped_inj_2014 total_crashes_2014
+## 1             NA             NA           NA                 NA
+## 2             NA             NA           NA                 NA
+## 3              2              1            1                  3
+## 4              5              2            3                 10
+## 5              2              1            1                  3
+## 6              1              0            1                  2
+##   total_inj_2014 total_fatal_2014 pop_2014 cycle_rate_2014 ped_rate_2014
+## 1             NA               NA       NA              NA            NA
+## 2             NA               NA       NA              NA            NA
+## 3              2                1    16186            0.06          0.12
+## 4              8                2    39675            0.13          0.13
+## 5              1                1     1974            0.51          1.01
+## 6              2                0     4122            0.24          0.24
+##   total_rate_2014 cycle_total_2015 cycle_fatal_2015 cycle_inj_2015
+## 1              NA               NA               NA             NA
+## 2              NA               NA               NA             NA
+## 3            0.19                2                0              2
+## 4            0.25                4                0              4
+## 5            1.52               NA               NA             NA
+## 6            0.49               NA               NA             NA
+##   ped_total_2015 ped_fatal_2015 ped_inj_2015 total_crashes_2015
+## 1             NA             NA           NA                 NA
+## 2             NA             NA           NA                 NA
+## 3              3              0            3                  5
+## 4              4              0            4                  8
+## 5              1              0            1                  1
+## 6             NA             NA           NA                 NA
+##   total_inj_2015 total_fatal_2015 pop_2015 cycle_rate_2015 ped_rate_2015
+## 1             NA               NA       NA              NA            NA
+## 2             NA               NA       NA              NA            NA
+## 3              5                0    16354            0.12          0.18
+## 4              8                0    39774            0.10          0.10
+## 5              1                0     2061            0.00          0.49
+## 6             NA               NA       NA              NA            NA
+##   total_rate_2015
+## 1              NA
+## 2              NA
+## 3            0.31
+## 4            0.20
+## 5            0.49
+## 6              NA</code></pre>
+</div>
+<div id="creating-the-dataframe-for-mapping" class="section level2">
+<h2>Creating the dataframe for mapping</h2>
+<p>In order to use the shapefile with R’s ggplot2 graphical package, we need to process it.</p>
+<pre class="r"><code>ill_f &lt;- fortify(ill, region=&quot;GEOID10&quot;)</code></pre>
+<p>Once we do that, we need to rejoin the data we saved to the new dataframe called ill_f.</p>
+<p>To do that, the GEOID number in the new dataframe needs to be made a number, so that we can join it with the GEOID in our data file, which is already a recognized as a number.</p>
+<p>Then we can write the dataframe out to a csv to use for mapping.</p>
+<pre class="r"><code>ill_f$id &lt;- as.numeric(as.character(ill_f$id))
+
+ill_f &lt;- left_join(ill_f, cycped, by = c(&#39;id&#39; = &#39;GEOID10&#39;))
+
+write_csv(ill_f,&quot;data/ill_f.csv&quot;)</code></pre>
+<p>Finally, we import and process a shapefile of the six counties. We’ll put this on top of the places layer of any map we do to make it easier to recognize where things are.</p>
+<pre class="r"><code>counties &lt;- readOGR(dsn = &quot;sixcounties/SixCounties.shp&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;sixcounties/SixCounties.shp&quot;, layer: &quot;SixCounties&quot;
+## with 7 features
+## It has 5 fields</code></pre>
+<pre class="r"><code>names(counties@data)</code></pre>
+<pre><code>## [1] &quot;statefp10&quot;  &quot;countyfp10&quot; &quot;countyns10&quot; &quot;geoid10&quot;    &quot;namelsad10&quot;</code></pre>
+<pre class="r"><code>co6 &lt;- fortify(counties, region=&quot;geoid10&quot;)
+write_csv(co6,&quot;data/counties6.csv&quot;)</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

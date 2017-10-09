@@ -1,0 +1,13 @@
+name: "flask_crashes"
+output_dir: "."
+navbar:
+  title: "Pedestrian/cyclist crash data"
+  left:
+    - text: "Data prep"
+      href: index.html
+    - text: "Plotting"
+      href: 01_plotting.html
+    - text: "Map prep"
+      href: 02_Map_prep.html
+    - text: "Mapping"
+      href: 03_Mapped.html
