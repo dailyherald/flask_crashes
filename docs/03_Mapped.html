@@ -467,6 +467,7 @@ map &lt;- map + geom_polygon(data = co6, aes(x=long, y = lat, group = group),
 
 map</code></pre>
 <p><img src="03_Mapped_files/figure-html/unnamed-chunk-5-1.png" width="960" /></p>
+<p>The biggest problem with these maps is that it’s capturing places with relatively low population but with high rates. Prime example being Barringtion, located at the point were Lake, Cook, Kane and McHenry counties touch.</p>
 </div>
 <div id="mapping-totals" class="section level2">
 <h2>Mapping totals</h2>
@@ -498,7 +499,7 @@ map &lt;- map + geom_polygon(data = co6, aes(x=long, y = lat, group = group),
 
 map</code></pre>
 <p><img src="03_Mapped_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
-<p>Finally, we exported out the data to use as the basis of a web app, and to import into QGis to create the geojson that would power an interactive map.</p>
+<p>Most of the areas in dark green are places with high populations, and so we expect to see them. But about five places - including Des Plaines and Skokie - had more fatalities in the time examined but were not among places with the highest population. Finally, we exported out the data to use as the basis of a web app, and to import into QGis to create the geojson that would power an interactive map.</p>
 </div>
 
 

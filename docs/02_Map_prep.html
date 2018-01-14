@@ -352,7 +352,7 @@ df &lt;- read_csv(&quot;data/all_crashData_0809.csv&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;sixCoplaces/smaller2.shp&quot;, layer: &quot;smaller2&quot;
 ## with 304 features
-## It has 13 fields</code></pre>
+## It has 7 fields</code></pre>
 <p>smaller2.shp contains places - meaning towns and other municipalities - in the six-county area. Shapefiles can be very large and detailed but the shapes in this have been simplified using a mapping program called Qgis. By simplified, we mean the shapes have been reduced in complexity - they have fewer points, which keeps the file size down.</p>
 <p>The shapes aren’t going to be accurate to the square foot, but they’re still representative of the municipality.</p>
 <p>Each place in the shapefile is associated with information. That information in the file can be accessed using the “@” sign instead of a “$” for dataframes. And, it’s called “data”.</p>
@@ -368,28 +368,17 @@ df &lt;- read_csv(&quot;data/all_crashData_0809.csv&quot;)</code></pre>
 ## 7        17     49945  02399381 1749945      Monee 49945
 ## 8        17     49854  02399380 1749854     Mokena 49854
 ## 9        17     46357  02399240 1746357  Manhattan 46357
-##                 NAME POPESTIMAT POPESTIM_1 POPESTIM_2 change2010
-## 0    Wilmington city       5750       5705       5691        -59
-## 1   Symerton village         87         89         89          2
-## 2  Shorewood village      15669      16515      16948       1279
-## 3 Romeoville village      39684      39754      39706         22
-## 4   Rockdale village       1977       1955       1941        -36
-## 5    Peotone village       4149       4131       4134        -15
-## 6  New Lenox village      24425      25379      26217       1792
-## 7      Monee village       5153       5098       5077        -76
-## 8     Mokena village      18806      19445      20097       1291
-## 9  Manhattan village       7089       7292       7546        457
-##   change20_1 change2014
-## 0        -45        -14
-## 1          2          0
-## 2        846        433
-## 3         70        -48
-## 4        -22        -14
-## 5        -18          3
-## 6        954        838
-## 7        -55        -21
-## 8        639        652
-## 9        203        254</code></pre>
+##                 NAME
+## 0    Wilmington city
+## 1   Symerton village
+## 2  Shorewood village
+## 3 Romeoville village
+## 4   Rockdale village
+## 5    Peotone village
+## 6  New Lenox village
+## 7      Monee village
+## 8     Mokena village
+## 9  Manhattan village</code></pre>
 <pre class="r"><code>summary(ill@data)</code></pre>
 <pre><code>##  STATEFP10   PLACEFP10      PLACENS10      GEOID10   
 ##  17:304    00243  :  1   00428803:  1   1700243:  1  
@@ -406,23 +395,7 @@ df &lt;- read_csv(&quot;data/all_crashData_0809.csv&quot;)</code></pre>
 ##  Antioch          :  1   01595  :  1   Antioch village          :  1  
 ##  Arlington Heights:  1   02154  :  1   Arlington Heights village:  1  
 ##  Aurora           :  1   (Other):279   (Other)                  :279  
-##  (Other)          :298   NA&#39;s   : 20   NA&#39;s                     : 20  
-##    POPESTIMAT        POPESTIM_1        POPESTIM_2        change2010      
-##  Min.   :      0   Min.   :      0   Min.   :      0   Min.   :-2636.00  
-##  1st Qu.:   3686   1st Qu.:   3726   1st Qu.:   3727   1st Qu.:  -86.25  
-##  Median :  10444   Median :  10454   Median :  10375   Median :   -8.50  
-##  Mean   :  26088   Mean   :  26325   Mean   :  26247   Mean   :  158.82  
-##  3rd Qu.:  23385   3rd Qu.:  23516   3rd Qu.:  23270   3rd Qu.:  115.75  
-##  Max.   :2697736   Max.   :2718530   Max.   :2704958   Max.   : 7222.00  
-##                                                                          
-##    change20_1        change2014       
-##  Min.   :-2998.0   Min.   :-13572.00  
-##  1st Qu.:    0.0   1st Qu.:  -149.00  
-##  Median :   41.0   Median :   -30.50  
-##  Mean   :  237.1   Mean   :   -78.26  
-##  3rd Qu.:  192.8   3rd Qu.:     0.00  
-##  Max.   :20794.0   Max.   :  1526.00  
-## </code></pre>
+##  (Other)          :298   NA&#39;s   : 20   NA&#39;s                     : 20</code></pre>
 <p>We can see the shapes using the “plot” command.</p>
 <pre class="r"><code>plot(ill)</code></pre>
 <p><img src="02_Map_prep_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
