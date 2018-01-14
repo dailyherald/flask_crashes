@@ -409,7 +409,8 @@ dfsum</code></pre>
   stat_smooth(method=&quot;lm&quot;) +
   facet_grid(. ~ factor(year))</code></pre>
 <p><img src="01_plotting_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Here we exclude rates above 2 since those are low popluation places where a single accident would yield a high rate.</p>
+<p>That’s hard to read. There’s a few towns with very small populations where one crash yields a very high rate, and that’s misleading.</p>
+<p>Let’s exclude rates above 2 since so we can see the results better.</p>
 <pre class="r"><code>dfa &lt;- df[df$total_rate &lt; 2,]
 
 qplot(pop,cycle_rate,
@@ -448,7 +449,8 @@ qplot(pop,cycle_rate,
   stat_smooth(method=&quot;lm&quot;) +
   facet_grid(. ~ factor(year))</code></pre>
 <p><img src="01_plotting_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Places with higher populations do tend to have more crashes, but even within that expected result we can see places with higher than expected crashes. And when you look at crashes by rate per 1000, there’s generally a negative correlation with population.</p>
+<p>So what are we seeing here? Places with higher populations tend to have more crashes.<br />
+But even within that expected result we can see places with populations over 50,000 with higher than expected rate of crashes.</p>
 </div>
 <div id="injuries-per-1000" class="section level2">
 <h2>Injuries per 1000</h2>
@@ -475,7 +477,7 @@ qplot(pop,cycle_rate,
   stat_smooth(method=&quot;lm&quot;) +
   facet_grid(. ~ factor(year))</code></pre>
 <p><img src="01_plotting_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>Generally it looks like the higher the crash rate, the more injuries - which might be expected. But again, there looks to be many places with higher than expected injuries vs. their rate.</p>
+<p>Generally it looks like the higher the crash rate, the more injuries - which might be expected. Places with a relatively low number of injuries but with a high rate of injuries are likely areas of low population. But there looks to be many places with higher than expected injuries vs. their rate.</p>
 </div>
 
 

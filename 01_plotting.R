@@ -80,6 +80,20 @@ qplot(pop,total_rate,
   stat_smooth(method="lm") +
   facet_grid(. ~ factor(year))
 
+#---------------------
+# looking at that with plotly
+install.packages("plotly")
+library(plotly)
+p <- qplot(pop,total_rate,
+      data=dfa,
+      alpha=I(.25)) + 
+  stat_smooth(method="lm") +
+  facet_grid(. ~ factor(year))
+ggplotly(p)
+
+#-------------
+
+
 qplot(pop,cycle_total,
       data=dfa,
       alpha=I(.25)) + 

@@ -227,6 +227,8 @@ map <- map + geom_polygon(data = co6, aes(x=long, y = lat, group = group),
 map
 ```
 
+The biggest problem with these maps is that it's capturing places with relatively low population but with high rates. Prime example being Barringtion, located at the point were Lake, Cook, Kane and McHenry counties touch.
+
 ##Mapping totals
 
 In the end, we found the most compelling and useful map was one showing how pervasive the problem is.
@@ -263,4 +265,6 @@ map
 
 ```
 
+Most of the areas in dark green are places with high populations, and so we expect to see them.
+But about five places - including Des Plaines and Skokie - had more fatalities in the time examined but were not among places with the highest population.
 Finally, we exported out the data to use as the basis of a web app, and to import into QGis to create the geojson that would power an interactive map. 

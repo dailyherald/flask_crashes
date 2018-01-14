@@ -104,7 +104,9 @@ qplot(pop,cycle_rate,
 ```
 
 
-Here we exclude rates above 2 since those are low popluation places where a single accident would yield a high rate.
+That's hard to read. There's a few towns with very small populations where one crash yields a very high rate, and that's misleading.
+
+Let's exclude rates above 2 since so we can see the results better.
 
 ```{r}
 
@@ -166,7 +168,9 @@ qplot(pop,total_rate,
 
 ```
 
-Places with higher populations do tend to have more crashes, but even within that expected result we can see places with higher than expected crashes. And when you look at crashes by rate per 1000, there's generally a negative correlation with population.
+So what are we seeing here?
+Places with higher populations tend to have more crashes.  
+But even within that expected result we can see places with populations over 50,000 with higher than expected rate of crashes. 
 
 
 ##Injuries per 1000
@@ -204,4 +208,6 @@ qplot(total_rate,total_inj,
 
 ```
 
-Generally it looks like the higher the crash rate, the more injuries - which might be expected. But again, there looks to be many places with higher than expected injuries vs. their rate.
+Generally it looks like the higher the crash rate, the more injuries - which might be expected. 
+Places with a relatively low number of injuries but with a high rate of injuries are likely areas of low population.
+But there looks to be many places with higher than expected injuries vs. their rate.
